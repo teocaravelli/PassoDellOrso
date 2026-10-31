@@ -5,10 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/PassoDellOrsoLaVendetta.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PassoDellOrsoLaVendetta.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/popola_ordini.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/popola_prodotti.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/aggiungi_pagamento_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/carrello_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/modifica_credenziali_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/modifica_ordine_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/ordini_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/prodotto_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/recupero_password_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/prodotti.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/data/prodotti.pickle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/utenti.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/data/utenti.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/catalogo_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/catalogo_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/dashboard_cliente_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/dashboard_cliente_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/login_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/login_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/main_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/profilo_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/profilo_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,37 +38,37 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "teocaravelli"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;teocaravelli&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/teocaravelli/PassoDellOrsoLaVendetta.git",
-    "accountId": "a103bb9e-aaee-4d34-81a5-c3ca5d626d6b"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/teocaravelli/PassoDellOrsoLaVendetta.git&quot;,
+    &quot;accountId&quot;: &quot;a103bb9e-aaee-4d34-81a5-c3ca5d626d6b&quot;
   }
-}]]></component>
+}</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.000000003613576" />
-      <entry key="MS500" value="1.040935922410035" />
-      <entry key="S2" value="3.0604133796110524" />
-      <entry key="S5" value="5.941152523911251" />
-      <entry key="S10" value="7.657933354631586" />
-      <entry key="S30" value="9.136838994423453" />
-      <entry key="S60" value="9.557170943485442" />
-      <entry key="M2" value="9.775697462499206" />
-      <entry key="M5" value="9.909575910002824" />
-      <entry key="M10" value="9.954669936167818" />
-      <entry key="M15" value="9.969753668470076" />
-      <entry key="M30" value="9.984863674069784" />
-      <entry key="H1" value="9.99242854405065" />
-      <entry key="H2" value="9.996213448411103" />
-      <entry key="H4" value="9.998106518255955" />
-      <entry key="D1" value="9.99968439110131" />
-      <entry key="W1" value="9.999954912313818" />
+      <entry key="MS100" value="1.00036749188302" />
+      <entry key="MS500" value="1.2140294552278514" />
+      <entry key="S2" value="3.060831478505153" />
+      <entry key="S5" value="6.071958097385653" />
+      <entry key="S10" value="8.075612816867645" />
+      <entry key="S30" value="9.899114565979726" />
+      <entry key="S60" value="10.43202117237441" />
+      <entry key="M2" value="10.711480870854537" />
+      <entry key="M5" value="10.883485999662357" />
+      <entry key="M10" value="10.941556982642188" />
+      <entry key="M15" value="10.960996529970991" />
+      <entry key="M30" value="10.980477505345899" />
+      <entry key="H1" value="10.990233557052989" />
+      <entry key="H2" value="10.995115478907046" />
+      <entry key="H4" value="10.997557414459308" />
+      <entry key="D1" value="10.999592857264215" />
+      <entry key="W1" value="10.999941835646323" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -77,29 +90,29 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.7928550589090172E-7" />
-      <entry key="MS500" value="0.0851566976636736" />
-      <entry key="S2" value="2.5111024396514097" />
-      <entry key="S5" value="5.664238988218469" />
-      <entry key="S10" value="7.507175531781252" />
-      <entry key="S30" value="9.083507807573836" />
-      <entry key="S60" value="9.530096003412323" />
-      <entry key="M2" value="9.762055689768621" />
-      <entry key="M5" value="9.904093910928763" />
-      <entry key="M10" value="9.951924699946963" />
-      <entry key="M15" value="9.967922567889037" />
-      <entry key="M30" value="9.983947651824392" />
-      <entry key="H1" value="9.99197041486329" />
-      <entry key="H2" value="9.995984354291755" />
-      <entry key="H4" value="9.997991963813678" />
-      <entry key="D1" value="9.999665297668797" />
-      <entry key="W1" value="9.99995218465549" />
+      <entry key="MS100" value="3.674919475781229E-4" />
+      <entry key="MS500" value="0.2231218001393198" />
+      <entry key="S2" value="2.3643179970705335" />
+      <entry key="S5" value="5.689256547979637" />
+      <entry key="S10" value="7.86027736734072" />
+      <entry key="S30" value="9.821152727033795" />
+      <entry key="S60" value="10.392205919369982" />
+      <entry key="M2" value="10.691359707396192" />
+      <entry key="M5" value="10.875385635714583" />
+      <entry key="M10" value="10.937498096098972" />
+      <entry key="M15" value="10.958288667176124" />
+      <entry key="M30" value="10.97912260370878" />
+      <entry key="H1" value="10.989555863482419" />
+      <entry key="H2" value="10.994776571409725" />
+      <entry key="H4" value="10.997387945529637" />
+      <entry key="D1" value="10.99956461033387" />
+      <entry key="W1" value="10.999937800318918" />
     </decayedShown>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3LSjcsLw79nEVoZk0rWWT5LwX90" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -112,6 +125,8 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.main.executor": "Run",
+    "Python.popola_ordini.executor": "Run",
+    "Python.popola_prodotti.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
@@ -136,6 +151,89 @@
       <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\models" />
       <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\controllers" />
     </key>
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrsoLaVendetta" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PassoDellOrso\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="popola_ordini" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PassoDellOrsoLaVendetta" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PassoDellOrso\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/popola_ordini.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="popola_prodotti" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PassoDellOrsoLaVendetta" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PassoDellOrso\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/popola_prodotti.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.popola_prodotti" />
+        <item itemvalue="Python.popola_ordini" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

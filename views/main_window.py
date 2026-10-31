@@ -11,6 +11,13 @@ from views.gestione_piste_view import GestionePisteView
 from views.inserimento_dipendente_view import InserimentoDipendenteView
 from views.gestione_inventario_view import GestioneInventarioView
 from views.nuovo_prodotto_view import NuovoProdottoView
+from views.aggiungi_pagamento_view import AggiungiPagamentoView
+from views.modifica_credenziali_view import ModificaCredenzialiView
+from views.ordini_view import OrdiniView
+from views.modifica_ordine_view import ModificaOrdineView
+from views.carrello_view import CarrelloView
+from views.prodotto_view import ProdottoView
+from views.recupero_password_view import RecuperoPasswordView
 
 class MainWindow(QMainWindow):
     def __init__(self, gestore_utenti, gestore_ordini, gestore_prodotti, gestore_piste):
@@ -46,6 +53,21 @@ class MainWindow(QMainWindow):
         self.profilo_view = ProfiloView(self.gestore_utenti, main_window=self)
         self.gestione_inventario_view = GestioneInventarioView(self.gestore_prodotti, main_window=self)
         self.nuovo_prodotto_view = NuovoProdottoView(self.gestore_prodotti, main_window=self)
+        self.aggiungi_pagamento_view = AggiungiPagamentoView(self.gestore_utenti, main_window=self)
+        self.stacked_widget.addWidget(self.aggiungi_pagamento_view)
+        self.modifica_credenziali_view = ModificaCredenzialiView(self.gestore_utenti, main_window=self)
+        self.stacked_widget.addWidget(self.modifica_credenziali_view)
+        self.ordini_view = OrdiniView(self.gestore_utenti, self.gestore_ordini, main_window=self)
+        self.stacked_widget.addWidget(self.ordini_view)
+        self.modifica_ordine_view = ModificaOrdineView(self.gestore_utenti, self.gestore_ordini, main_window=self)
+        self.stacked_widget.addWidget(self.modifica_ordine_view)
+        self.carrello_view = CarrelloView(self.gestore_utenti, main_window=self)
+        self.stacked_widget.addWidget(self.carrello_view)
+        self.prodotto_view = ProdottoView(self.gestore_utenti, main_window=self)
+        self.stacked_widget.addWidget(self.prodotto_view)
+        self.recupero_view = RecuperoPasswordView(self.gestore_utenti, main_window=self)
+        self.stacked_widget.addWidget(self.recupero_view)
+
 
         # Aggiungiamo le view al QStackedWidget
         self.stacked_widget.addWidget(self.login_view)  # Indice 0
@@ -102,5 +124,40 @@ class MainWindow(QMainWindow):
 
     def mostra_aggiungi_prodotto(self):
         self.stacked_widget.setCurrentWidget(self.nuovo_prodotto_view)
+
+    def mostra_aggiungi_pagamento(self):
+        self.aggiungi_pagamento_view.aggiorna_dati()
+        self.stacked_widget.setCurrentWidget(self.aggiungi_pagamento_view)
+
+    def mostra_modifica_credenziali(self):
+        self.modifica_credenziali_view.aggiorna_dati()
+        self.stacked_widget.setCurrentWidget(self.modifica_credenziali_view)
+
+    def mostra_miei_ordini(self):
+            self.ordini_view.aggiorna_dati()
+            self.stacked_widget.setCurrentWidget(self.ordini_view)
+
+    def mostra_modifica_ordine(self, ordine):
+        self.modifica_ordine_view.imposta_ordine(ordine)
+        self.stacked_widget.setCurrentWidget(self.modifica_ordine_view)
+
+    def mostra_carrello(self):
+        self.carrello_view.aggiorna_dati()
+        self.stacked_widget.setCurrentWidget(self.carrello_view)
+
+    def mostra_singolo_prodotto(self, prodotto):
+        self.prodotto_view.imposta_prodotto(prodotto)
+        self.stacked_widget.setCurrentWidget(self.prodotto_view)
+
+    def mostra_catalogo(self):
+        if hasattr(self, 'catalogo_view'):
+            self.catalogo_view.aggiorna_dati()  # <-- Questo ricarica il numero nel pulsante Carrello(N) e i prodotti freschi
+        self.stacked_widget.setCurrentWidget(self.catalogo_view)
+
+    def mostra_recupero_password(self):
+        self.stacked_widget.setCurrentWidget(self.recupero_view)
+
+
+
 
 

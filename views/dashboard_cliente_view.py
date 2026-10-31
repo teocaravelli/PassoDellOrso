@@ -76,7 +76,7 @@ class DashboardClienteView(QWidget):
 
         self.top_right_layout.addStretch()
 
-        self.btn_carrello = QPushButton("Carrello (0)")
+        self.btn_carrello = QPushButton("Carrello")
         self.btn_carrello.setObjectName("CarrelloButton")
         self.btn_carrello.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_carrello.setFixedSize(180, 42)

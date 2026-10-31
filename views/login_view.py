@@ -141,7 +141,7 @@ class LoginView(QWidget):
     def connetti_segnali(self):
         self.btn_accedi.clicked.connect(self.esegui_login)
         self.btn_registrati.clicked.connect(self.vai_a_registrazione)
-        self.btn_recupero.clicked.connect(self.recupera_password)
+        self.btn_recupero.clicked.connect(self.recupero_password)
 
     def esegui_login(self):
         email = self.input_email.text().strip()
@@ -150,9 +150,14 @@ class LoginView(QWidget):
         if not email or not password:
             QMessageBox.warning(self, "Attenzione", "Inserisci sia email che password.")
             return
+
         utente_loggato = self.gestore_utenti.richiestaAccesso(email, password)
 
         if utente_loggato:
+            # === SALVIAMO L'UTENTE NEL GESTORE E NEL CONTROLLER ===
+            self.gestore_utenti.utente_corrente = utente_loggato
+            # (Se nel tuo GestoreUtenti il metodo per impostarlo è un altro, ad es. set_utente_corrente, usa quello)
+
             if isinstance(utente_loggato, Dipendente):
                 self.main_window.mostra_area_dipendente()
             else:
@@ -165,5 +170,6 @@ class LoginView(QWidget):
         if self.main_window:
             self.main_window.mostra_registrazione()
 
-    def recupera_password(self):
-        QMessageBox.information(self, "Recupero", "Qui apriremo il popup per il recupero password.")
+    def recupero_password(self):
+        if self.main_window and hasattr(self.main_window, 'mostra_recupero_password'):
+            self.main_window.mostra_recupero_password()
