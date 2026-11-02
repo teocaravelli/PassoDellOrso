@@ -30,11 +30,14 @@ class GestoreOrdini:
             raise ValueError("Il carrello è vuoto.")
         if not self.MetodoPagamentoValido(metodo_pagamento):
             raise ValueError("Metodo di pagamento non valido o rifiutato.")
+
         nuovo_id = 1 if not self._ordini else max(o.id_ordine for o in self._ordini) + 1
         self.validaDati(carrello)
         prezzo_totale = sum(item.prodotto.prezzo * item.quantita for item in carrello)
+
         for item in carrello:
-            prodotto_catalogo = self._gestore_prodotti.getProdottoById(item.prodotto.id_prodotto)
+            # CORREZIONE QUI: item.prodotto.id invece di item.prodotto.id_prodotto
+            prodotto_catalogo = self._gestore_prodotti.getProdottoById(item.prodotto.id)
             if prodotto_catalogo:
                 if hasattr(prodotto_catalogo, 'quantita'):
                     if prodotto_catalogo.quantita >= item.quantita:
@@ -43,12 +46,15 @@ class GestoreOrdini:
                             prodotto_catalogo.is_disponibile = False
                     else:
                         raise ValueError(f"Prodotto {prodotto_catalogo.nome} esaurito prima del checkout.")
+
         self._gestore_prodotti._salva_dati()
+
         prodotti_ordine = [ProdottoOrdine(item.prodotto, item.quantita) for item in carrello]
         nuovo_ordine = Ordine(nuovo_id, metodo_pagamento, prezzo_totale, prodotti_ordine)
+
         self.aggiungiOrdine(nuovo_ordine)
         cliente.aggiungi_ordine(nuovo_ordine)
-        self._gestore_mail.inviaMailConferma(cliente.email, nuovo_ordine)
+        self._gestore_mail.inviaEmailConferma(cliente.email, nuovo_ordine)
         cliente.svuota_carrello()
 
     def aggiungiOrdine(self, ordine) -> None:
@@ -92,8 +98,17 @@ class GestoreOrdini:
         if ordine:
             if approvato:
                 ordine.stato = StatoOrdine.RIMBORSO_COMPLETATO
+
+                for item in ordine.prodotti:
+                    prodotto_catalogo = self._gestore_prodotti.getProdottoById(item.prodotto.id)
+                    if prodotto_catalogo and hasattr(prodotto_catalogo, 'quantita'):
+                        prodotto_catalogo.quantita += item.quantita
+                        prodotto_catalogo.is_disponibile = True
+
+                self._gestore_prodotti._salva_dati()
             else:
                 ordine.stato = StatoOrdine.COMPLETATO
+
             self._salva_dati()
 
     def _salva_dati(self):

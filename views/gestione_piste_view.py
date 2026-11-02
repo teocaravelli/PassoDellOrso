@@ -121,10 +121,6 @@ class GestionePisteView(QWidget):
     def connetti_segnali(self):
         self.btn_indietro.clicked.connect(self.torna_alla_dashboard)
 
-    # ==========================================
-    # LOGICA DI POPOLAMENTO
-    # ==========================================
-
     def aggiorna_vista(self):
         self.tabella_piste.setRowCount(0)
         piste = self.gestore_piste.visualizzaPiste()
@@ -133,39 +129,33 @@ class GestionePisteView(QWidget):
         self.tabella_piste.setAlternatingRowColors(True)
 
         for riga, pista in enumerate(piste):
-            # 0. ID
             id_item = QTableWidgetItem(f"#{pista.id_pista}")
             id_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_piste.setItem(riga, 0, id_item)
 
-            # 1. Nome Pista
             nome_item = QTableWidgetItem(pista.nome)
             nome_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_piste.setItem(riga, 1, nome_item)
 
-            # 2. Difficoltà
             diff_item = QTableWidgetItem(pista.difficolta.name.replace("_", " "))
             diff_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_piste.setItem(riga, 2, diff_item)
 
-            # 3. Widget Azione (Combobox + Bottone)
             pannello_azione = QWidget()
             layout_azione = QHBoxLayout(pannello_azione)
             layout_azione.setContentsMargins(5, 2, 5, 2)
 
             combo_stato = QComboBox()
-            # Popoliamo la tendina con tutti i valori dell'enum
+
             for stato in StatoApertura:
                 combo_stato.addItem(stato.name.replace("_", " "), stato)
 
-            # Impostiamo il valore visibile attuale uguale a quello del model
             combo_stato.setCurrentText(pista.stato_apertura.name.replace("_", " "))
 
             btn_aggiorna = QPushButton("Salva")
             btn_aggiorna.setCursor(Qt.CursorShape.PointingHandCursor)
             btn_aggiorna.setProperty("class", "AggiornaBtn")
 
-            # Lambda trick per passare ID pista e il riferimento alla Combobox
             btn_aggiorna.clicked.connect(
                 lambda checked, p_id=pista.id_pista, cb=combo_stato: self.salva_nuovo_stato(p_id, cb)
             )
@@ -174,10 +164,6 @@ class GestionePisteView(QWidget):
             layout_azione.addWidget(btn_aggiorna)
 
             self.tabella_piste.setCellWidget(riga, 3, pannello_azione)
-
-    # ==========================================
-    # AZIONI
-    # ==========================================
 
     def salva_nuovo_stato(self, id_pista, combo_box):
         """Metodo per salvare il nuovo stato richiamando il GestorePiste."""

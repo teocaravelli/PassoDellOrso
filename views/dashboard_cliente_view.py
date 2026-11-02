@@ -16,14 +16,10 @@ class DashboardClienteView(QWidget):
         self.applica_stili()
 
     def setup_ui(self):
-        # Layout principale
         self.main_layout = QHBoxLayout(self)
         self.main_layout.setContentsMargins(40, 30, 40, 30)
         self.main_layout.setSpacing(30)
 
-        # ==========================================
-        # COLONNA SINISTRA: LOGO E MENÙ
-        # ==========================================
         self.left_layout = QVBoxLayout()
         self.left_layout.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.left_layout.setSpacing(15)
@@ -54,16 +50,10 @@ class DashboardClienteView(QWidget):
             btn.setFixedSize(160, 42)
             self.left_layout.addWidget(btn)
 
-        # ==========================================
-        # LINEA SEPARATRICE VERTICALE
-        # ==========================================
         self.linea_verticale = QFrame()
         self.linea_verticale.setFrameShape(QFrame.Shape.VLine)
         self.linea_verticale.setObjectName("LineaSeparazione")
 
-        # ==========================================
-        # COLONNA DESTRA: BENVENUTO, CARRELLO E PISTE
-        # ==========================================
         self.right_layout = QVBoxLayout()
         self.right_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.right_layout.setSpacing(20)
@@ -145,7 +135,6 @@ class DashboardClienteView(QWidget):
         self.btn_logout.clicked.connect(self.esegui_logout)
 
     def aggiorna_dati(self):
-        # Cerchiamo l'utente loggato in modo sicuro
         utente = None
         if self.gestore_utenti:
             if hasattr(self.gestore_utenti, 'utente_corrente'):
@@ -173,7 +162,6 @@ class DashboardClienteView(QWidget):
         else:
             self.lbl_benvenuto.setText("Benvenuto Ospite")
 
-        # Pulizia e ricaricamento delle piste
         while self.piste_layout.count():
             child = self.piste_layout.takeAt(0)
             if child.widget():

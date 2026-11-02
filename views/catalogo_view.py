@@ -1,5 +1,3 @@
-import os
-import pickle
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QFrame, QScrollArea, QGridLayout
@@ -8,25 +6,17 @@ from PyQt6.QtCore import Qt
 
 
 class CatalogoView(QWidget):
-    def __init__(self, gestore_utenti, main_window=None):
+    # 1. MODIFICA: Aggiunto gestore_prodotti nel costruttore
+    def __init__(self, gestore_utenti, gestore_prodotti, main_window=None):
         super().__init__()
         self.gestore_utenti = gestore_utenti
+        self.gestore_prodotti = gestore_prodotti
         self.main_window = main_window
         self.prodotti = []
 
         self.setup_ui()
         self.connetti_segnali()
         self.applica_stili()
-
-    def carica_prodotti(self):
-        percorso = "data/prodotti.pickle"
-        if os.path.exists(percorso):
-            try:
-                with open(percorso, "rb") as f:
-                    return pickle.load(f)
-            except Exception:
-                return []
-        return []
 
     def setup_ui(self):
         self.main_layout = QVBoxLayout(self)
@@ -83,75 +73,17 @@ class CatalogoView(QWidget):
         self.btn_indietro.clicked.connect(self.vai_a_dashboard)
         self.btn_carrello.clicked.connect(self.vai_al_carrello)
 
-    def _leggi_valore(self, obj, metodo_uml, possibili_attributi, default=None):
-        if hasattr(obj, metodo_uml) and callable(getattr(obj, metodo_uml)):
-            return getattr(obj, metodo_uml)()
-        for attr in possibili_attributi:
-            if hasattr(obj, attr):
-                val = getattr(obj, attr)
-                return val() if callable(val) else val
-        if hasattr(obj, '__dict__'):
-            for k, v in obj.__dict__.items():
-                for attr in possibili_attributi:
-                    if k.lower().endswith(attr.lower()):
-                        return v
-        return default
-
-    def _verifica_disponibilita(self, prodotto):
-        # Legge la disponibilità usando la property 'is_disponibile' o il metodo 'get_is_disponibile'
-        is_disp = getattr(prodotto, 'is_disponibile', True)
-        if hasattr(prodotto, 'get_is_disponibile') and callable(prodotto.get_is_disponibile):
-            is_disp = prodotto.get_is_disponibile()
-
-        nome_classe = type(prodotto).__name__
-
-        # Lezione e Attrezzatura hanno l'attributo quantita
-        if nome_classe in ["Attrezzatura", "Lezione"] or hasattr(prodotto, 'quantita'):
-            qta = getattr(prodotto, 'quantita', 0)
-            if hasattr(prodotto, 'get_quantita') and callable(prodotto.get_quantita):
-                qta = prodotto.get_quantita()
-            return bool(is_disp and qta > 0), qta
-        else:
-            # SkiPass e Assicurazione sono illimitati
-            return bool(is_disp), None
-
     def aggiorna_dati(self):
-        self.prodotti = self.carica_prodotti()
+        # 2. MODIFICA: Delega la lettura dei prodotti al Controller
+        self.prodotti = self.gestore_prodotti.get_tutti_prodotti()
 
-        # 1. Cerca l'utente corrente
+        # 3. MODIFICA: Legge l'utente e il suo carrello correttamente dalla memoria, senza aprire file
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
-
-        # 2. Se è None, proviamo a caricarlo direttamente dal file degli utenti (data/utenti.pickle) o dal gestore
-        if not utente:
-            import os, pickle
-            # Tentativo A: preleva il primo utente dalla lista del gestore se esiste
-            if hasattr(self.gestore_utenti, 'utenti') and self.gestore_utenti.utenti:
-                utente = self.gestore_utenti.utenti[0]
-                self.gestore_utenti.utente_corrente = utente
-            # Tentativo B: legge il file pickle degli utenti
-            elif os.path.exists("data/utenti.pickle"):
-                try:
-                    with open("data/utenti.pickle", "rb") as f:
-                        lista_utenti = pickle.load(f)
-                        if lista_utenti:
-                            utente = lista_utenti[0]
-                            self.gestore_utenti.utente_corrente = utente
-                except Exception:
-                    pass
-
-        # 3. Calcola il numero di elementi nel carrello
         num_carrello = 0
-        if utente:
-            carrello = getattr(utente, 'carrello', None)
-            if carrello is None and hasattr(utente, '_carrello'):
-                carrello = utente._carrello
 
-            if carrello:
-                num_carrello = sum(getattr(item, 'quantita', getattr(item, '_quantita', 1)) for item in carrello)
+        if utente and hasattr(utente, 'prodotti_carrello'):
+            num_carrello = sum(item.quantita for item in utente.prodotti_carrello)
 
-        print(f"DEBUG FORZATO - Utente: {utente}, Carrello: {num_carrello}")
-
-        # 4. Aggiorna il testo del pulsante
         self.btn_carrello.setText(f"Carrello ({num_carrello})")
 
         while self.grid_layout.count():
@@ -164,19 +96,17 @@ class CatalogoView(QWidget):
         max_colonne = 3
 
         for prodotto in self.prodotti:
-            nome = getattr(prodotto, 'nome', getattr(prodotto, '_nome', 'Prodotto'))
-            prezzo = getattr(prodotto, 'prezzo', getattr(prodotto, '_prezzo', 0.0))
-            disponibile, qta = self._verifica_disponibilita(prodotto)
+            # 4. MODIFICA: Utilizza le property ufficiali del model
+            nome = prodotto.nome
+            prezzo = prodotto.prezzo
+            is_disp = prodotto.is_disponibile
+            qta = getattr(prodotto, 'quantita', None)
 
             card = QFrame()
             card.setObjectName("CardSingola")
             card.setFixedSize(260, 340)
             card.setStyleSheet("""
-                QFrame#CardSingola { 
-                    border: 2px solid #b3d4e6; 
-                    border-radius: 12px; 
-                    background-color: white; 
-                }
+                QFrame#CardSingola { border: 2px solid #b3d4e6; border-radius: 12px; background-color: white; }
             """)
 
             lay_card = QVBoxLayout(card)
@@ -188,7 +118,8 @@ class CatalogoView(QWidget):
             lbl_img.setFixedHeight(110)
             lbl_img.setStyleSheet("background-color: #add8e6; border: none; border-radius: 8px; font-size: 45px;")
 
-            if disponibile:
+            # Logica Badge Disponibilità
+            if is_disp and (qta is None or qta > 0):
                 testo_disp = f"Disponibile ({qta})" if qta is not None else "Disponibile"
                 colore_badge = "#5cb85c"
             else:
@@ -203,13 +134,13 @@ class CatalogoView(QWidget):
                 border: none; border-radius: 4px; padding: 2px 8px; font-size: 11px;
             """)
 
-            lbl_nome = QLabel(str(nome))
+            lbl_nome = QLabel(nome)
             lbl_nome.setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_nome.setWordWrap(True)
             lbl_nome.setStyleSheet(
                 "background: transparent; border: none; font-size: 15px; font-weight: bold; color: #1a365d;")
 
-            lbl_prezzo = QLabel(f"{float(prezzo):.1f} €")
+            lbl_prezzo = QLabel(f"€ {prezzo:.2f}")
             lbl_prezzo.setAlignment(Qt.AlignmentFlag.AlignCenter)
             lbl_prezzo.setStyleSheet(
                 "background: transparent; border: none; font-size: 16px; font-weight: bold; color: #d9534f;")

@@ -25,6 +25,10 @@ class Ordine:
     def stato(self) -> StatoOrdine:
         return self._stato
 
+    @property
+    def prodotti(self) -> List[ProdottoOrdine]:
+        return self._prodotti
+
     @stato.setter
     def stato(self, valore: StatoOrdine) -> None:
         self._stato = valore

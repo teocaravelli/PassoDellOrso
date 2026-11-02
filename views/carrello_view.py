@@ -1,7 +1,3 @@
-import os
-import pickle
-import datetime
-from argparse import Namespace
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QFrame, QScrollArea, QMessageBox
@@ -10,9 +6,10 @@ from PyQt6.QtCore import Qt
 
 
 class CarrelloView(QWidget):
-    def __init__(self, gestore_utenti, main_window=None):
+    def __init__(self, gestore_utenti, gestore_ordini, main_window=None):
         super().__init__()
         self.gestore_utenti = gestore_utenti
+        self.gestore_ordini = gestore_ordini
         self.main_window = main_window
 
         self.setup_ui()
@@ -97,10 +94,10 @@ class CarrelloView(QWidget):
             self.lbl_totale.setText("Totale: € 0.00")
             return
 
-        if not hasattr(utente, 'carrello'):
-            utente.carrello = []
+        if not hasattr(utente, 'prodotti_carrello'):
+            utente.prodotti_carrello = []
 
-        carrello = utente.carrello
+        carrello = utente.prodotti_carrello
         totale = 0.0
 
         if not carrello:
@@ -115,8 +112,12 @@ class CarrelloView(QWidget):
             self.btn_svuota.setEnabled(True)
 
             for index, item in enumerate(carrello):
-                nome = getattr(item, 'nome', 'Prodotto')
-                prezzo = getattr(item, 'prezzo', 0.0)
+                prodotto = getattr(item, 'prodotto', None)
+                if not prodotto:
+                    continue
+
+                nome = getattr(prodotto, 'nome', 'Prodotto')
+                prezzo = getattr(prodotto, 'prezzo', 0.0)
                 qta = getattr(item, 'quantita', 1)
                 subtotale = prezzo * qta
                 totale += subtotale
@@ -153,98 +154,39 @@ class CarrelloView(QWidget):
 
     def rimuovi_singolo_prodotto(self, index):
         utente = self.gestore_utenti.utente_corrente
-        if utente and hasattr(utente, 'carrello') and 0 <= index < len(utente.carrello):
-            utente.carrello.pop(index)
+        if utente and hasattr(utente, 'prodotti_carrello') and 0 <= index < len(utente.prodotti_carrello):
+            utente.prodotti_carrello.pop(index)
             self.salva_dati_utente()
             self.aggiorna_dati()
 
     def svuota_carrello(self):
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
-        if not utente or not getattr(utente, 'carrello', []):
+        if not utente or not getattr(utente, 'prodotti_carrello', []):
             return
 
         reply = QMessageBox.question(self, "Conferma", "Sei sicuro di voler svuotare il carrello?",
                                      QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
 
         if reply == QMessageBox.StandardButton.Yes:
-            utente.carrello.clear()
+            utente.prodotti_carrello.clear()
             self.salva_dati_utente()
             self.aggiorna_dati()
 
-    # --- FUNZIONI DI ACCESSO E MODIFICA DELL'ATTRIBUTO QUANTITÀ ---
-    def _leggi_id(self, prod):
-        if hasattr(prod, 'getId') and callable(prod.getId):
-            return prod.getId()
-        if hasattr(prod, '__dict__'):
-            for k, v in prod.__dict__.items():
-                if k.lower().endswith('id') or k.lower().endswith('id_prodotto'):
-                    return v
-        return getattr(prod, 'id_prodotto', getattr(prod, 'id', None))
-
-    def _leggi_nome(self, prod):
-        if hasattr(prod, 'getNome') and callable(prod.getNome):
-            return prod.getNome()
-        if hasattr(prod, '__dict__'):
-            for k, v in prod.__dict__.items():
-                if k.lower().endswith('nome'):
-                    return v
-        return getattr(prod, 'nome', '')
-
-    def _leggi_quantita(self, prod):
-        if hasattr(prod, 'getQuantita') and callable(prod.getQuantita):
-            return int(prod.getQuantita())
-        for attr in ['quantita', 'quantità', '_quantita', '_quantità']:
-            if hasattr(prod, attr):
-                val = getattr(prod, attr)
-                return int(val() if callable(val) else val)
-        if hasattr(prod, '__dict__'):
-            for k, v in prod.__dict__.items():
-                if 'quantit' in k.lower():
-                    return int(v)
-        return 5  # Default per oggetti legacy senza attributo
-
-    def _scala_quantita_prodotto(self, prod, qta_da_scalare):
-        qta_attuale = self._leggi_quantita(prod)
-        nuova_qta = max(0, qta_attuale - int(qta_da_scalare))
-
-        # 1. Prova i metodi UML
-        if hasattr(prod, 'decrementaQuantita') and callable(prod.decrementaQuantita):
-            try:
-                prod.decrementaQuantita(int(qta_da_scalare))
-                return
-            except Exception:
-                pass
-        if hasattr(prod, 'setQuantita') and callable(prod.setQuantita):
-            try:
-                prod.setQuantita(nuova_qta)
-                return
-            except Exception:
-                pass
-
-        # 2. Aggiorna direttamente nel dizionario dell'oggetto (funziona anche con attributi privati __quantita)
-        aggiornato = False
-        if hasattr(prod, '__dict__'):
-            for k in list(prod.__dict__.keys()):
-                if 'quantit' in k.lower():
-                    prod.__dict__[k] = nuova_qta
-                    aggiornato = True
-
-        if not aggiornato:
-            prod.quantita = nuova_qta
-
-    def _trova_prodotto_in_inventario(self, inventario, id_cercato, nome_cercato):
-        for p in inventario:
-            id_p = self._leggi_id(p)
-            if id_cercato is not None and id_p is not None and id_p == id_cercato:
-                return p
-        for p in inventario:
-            if str(self._leggi_nome(p)).strip().lower() == str(nome_cercato).strip().lower():
-                return p
-        return None
-
     def procedi_acquisto(self):
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
-        if not utente or not getattr(utente, 'carrello', []):
+        if not utente or not getattr(utente, 'prodotti_carrello', []):
+            return
+
+        # 1. CONTROLLO METODO DI PAGAMENTO
+        # Sostituisci 'metodi_pagamento' con il nome reale della lista nel tuo file Cliente se differisce
+        metodi_salvati = getattr(utente, 'metodi_pagamento', getattr(utente, '_metodi_pagamento', []))
+
+        if not metodi_salvati:
+            QMessageBox.warning(
+                self,
+                "Metodo di Pagamento Mancante",
+                "Impossibile procedere.\nNon hai registrato alcun metodo di pagamento.\nVai nell'area Profilo per aggiungerne uno."
+            )
             return
 
         reply = QMessageBox.question(self, "Conferma Acquisto",
@@ -254,88 +196,19 @@ class CarrelloView(QWidget):
         if reply != QMessageBox.StandardButton.Yes:
             return
 
-        percorso_prodotti = "data/prodotti.pickle"
-        inventario = []
-        if os.path.exists(percorso_prodotti):
-            with open(percorso_prodotti, "rb") as f:
-                inventario = pickle.load(f)
+        try:
+            # 2. Utilizza il primo metodo di pagamento disponibile del cliente (invece di una stringa fittizia)
+            metodo_scelto = metodi_salvati[0]
 
-        # Controllo disponibilità scorte prima di procedere
-        for item_carrello in utente.carrello:
-            ha_qta = getattr(item_carrello, 'ha_quantita_limitata', False)
-            if ha_qta:
-                id_cercato = getattr(item_carrello, 'id_prodotto', None)
-                nome_cercato = getattr(item_carrello, 'nome', '')
-                qta_richiesta = int(getattr(item_carrello, 'quantita', 1))
+            self.gestore_ordini.richiestaOrdine(utente, utente.prodotti_carrello, metodo_scelto)
 
-                prod_reale = next((p for p in inventario if
-                                   getattr(p, 'id', None) == id_cercato or getattr(p, 'nome', '') == nome_cercato),
-                                  None)
-                if prod_reale:
-                    qta_disp = getattr(prod_reale, 'quantita', 0)
-                    if qta_disp < qta_richiesta:
-                        QMessageBox.warning(self, "Scorte Insufficienti",
-                                            f"Il prodotto '{nome_cercato}' ha esaurito le scorte (disponibili: {qta_disp}).")
-                        return
+            self.salva_dati_utente()
 
-        # Scalatura effettiva delle quantità dall'inventario e salvataggio
-        lista_prodotti_ordine = []
-        totale_ordine = 0.0
+            QMessageBox.information(self, "Acquisto Completato", "Ordine completato con successo e mail inviata!")
+            self.torna_indietro()
 
-        for item_carrello in utente.carrello:
-            ha_qta = getattr(item_carrello, 'ha_quantita_limitata', False)
-            id_cercato = getattr(item_carrello, 'id_prodotto', None)
-            nome_cercato = getattr(item_carrello, 'nome', 'Prodotto')
-            qta_acquistata = int(getattr(item_carrello, 'quantita', 1))
-            prezzo_unitario = float(getattr(item_carrello, 'prezzo', 0.0))
-
-            if ha_qta:
-                prod_reale = next((p for p in inventario if
-                                   getattr(p, 'id', None) == id_cercato or getattr(p, 'nome', '') == nome_cercato),
-                                  None)
-                if prod_reale:
-                    # Scala la quantità usando il metodo o l'attributo diretto
-                    if hasattr(prod_reale, 'decrementa_quantita'):
-                        prod_reale.decrementa_quantita(qta_acquistata)
-                    else:
-                        qta_attuale = getattr(prod_reale, 'quantita', 0)
-                        prod_reale.quantita = max(0, qta_attuale - qta_acquistata)
-
-            prodotto_ordine = Namespace(
-                tipo_oggetto="ProdottoOrdine",
-                id_prodotto=id_cercato,
-                nome=nome_cercato,
-                prezzo=prezzo_unitario,
-                quantita=qta_acquistata
-            )
-            lista_prodotti_ordine.append(prodotto_ordine)
-            totale_ordine += (prezzo_unitario * qta_acquistata)
-
-        with open(percorso_prodotti, "wb") as f:
-            pickle.dump(inventario, f)
-
-        if self.main_window and hasattr(self.main_window, 'catalogo_view'):
-            self.main_window.catalogo_view.prodotti = inventario
-
-        ora_attuale = datetime.datetime.now()
-        nuovo_ordine = Namespace(
-            id_ordine=int(ora_attuale.timestamp()),
-            data=ora_attuale.strftime("%d/%m/%Y %H:%M"),
-            totale=totale_ordine,
-            stato="COMPLETATO",
-            prodotti=lista_prodotti_ordine
-        )
-
-        if not hasattr(utente, 'storico_ordini'):
-            utente.storico_ordini = []
-        utente.storico_ordini.append(nuovo_ordine)
-
-        utente.carrello.clear()
-        self.salva_dati_utente()
-
-        QMessageBox.information(self, "Acquisto Completato",
-                                "Ordine completato con successo! Le scorte sono state aggiornate.")
-        self.torna_indietro()
+        except ValueError as e:
+            QMessageBox.warning(self, "Errore durante l'acquisto", str(e))
 
     def salva_dati_utente(self):
         if hasattr(self.gestore_utenti, '_salva_dati'):

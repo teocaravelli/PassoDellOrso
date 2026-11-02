@@ -17,22 +17,18 @@ class ModificaProdottoDialog(QDialog):
         layout = QVBoxLayout(self)
         form_layout = QFormLayout()
 
-        # CAMPO NOME
         self.input_nome = QLineEdit(prodotto.nome)
         self.input_nome.setStyleSheet("background-color: #add8e6; border: 1px solid #1a365d; padding: 5px;")
         form_layout.addRow("Nome:", self.input_nome)
 
-        # CAMPO PREZZO
         self.input_prezzo = QDoubleSpinBox()
         self.input_prezzo.setMaximum(10000.0)
         self.input_prezzo.setDecimals(2)
-        # Supponiamo che l'attributo sia 'prezzo' (adattalo se si chiama diversamente)
         prezzo_attuale = getattr(prodotto, 'prezzo', 0.0)
         self.input_prezzo.setValue(float(prezzo_attuale))
         self.input_prezzo.setStyleSheet("background-color: #add8e6; border: 1px solid #1a365d; padding: 5px;")
         form_layout.addRow("Prezzo (€):", self.input_prezzo)
 
-        # CAMPO QUANTITÀ (Dinamico: solo se il prodotto ha questo attributo)
         self.input_quantita = None
         if hasattr(prodotto, 'quantita'):
             self.input_quantita = QSpinBox()
@@ -41,24 +37,21 @@ class ModificaProdottoDialog(QDialog):
             self.input_quantita.setStyleSheet("background-color: #add8e6; border: 1px solid #1a365d; padding: 5px;")
             form_layout.addRow("Quantità:", self.input_quantita)
 
-        # CAMPO DISPONIBILITÀ (Es. Checkbox)
         self.check_disponibile = QCheckBox("Prodotto Disponibile")
-        # Supponiamo l'attributo si chiami 'disponibile' (booleano)
-        disp_attuale = getattr(prodotto, 'disponibile', True)
+        disp_attuale = getattr(prodotto, 'is_disponibile', True)
         self.check_disponibile.setChecked(disp_attuale)
         form_layout.addRow("", self.check_disponibile)
 
         layout.addLayout(form_layout)
 
-        # BOTTONI SALVA/ANNULLA
         btn_layout = QHBoxLayout()
         btn_salva = QPushButton("Salva Modifiche")
         btn_salva.setStyleSheet("background-color: #1a365d; color: white; padding: 8px; font-weight: bold;")
-        btn_salva.clicked.connect(self.accept)  # Chiude il dialog con successo
+        btn_salva.clicked.connect(self.accept)
 
         btn_annulla = QPushButton("Annulla")
         btn_annulla.setStyleSheet("background-color: #666; color: white; padding: 8px; font-weight: bold;")
-        btn_annulla.clicked.connect(self.reject)  # Chiude il dialog annullando
+        btn_annulla.clicked.connect(self.reject)
 
         btn_layout.addWidget(btn_annulla)
         btn_layout.addWidget(btn_salva)
@@ -188,8 +181,7 @@ class GestioneInventarioView(QWidget):
             prezzo_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella.setItem(riga, 2, prezzo_item)
 
-            # Verifica della disponibilità (usando is_disponibile) e quantità
-            dettagli_testo = "🟢 Disp." if prodotto.is_disponibile else "🔴 Esaurito"
+            dettagli_testo = "Disponibile" if prodotto.is_disponibile else "Esaurito"
 
             if hasattr(prodotto, 'quantita'):
                 dettagli_testo += f"\nQuantità: {prodotto.quantita}"
@@ -221,7 +213,6 @@ class GestioneInventarioView(QWidget):
     def apri_modifica_prodotto(self, prodotto):
         dialog = ModificaProdottoDialog(prodotto, self)
 
-        # Adattiamo il dialog al nome corretto dell'attributo
         dialog.check_disponibile.setChecked(prodotto.is_disponibile)
 
         if dialog.exec() == QDialog.DialogCode.Accepted:

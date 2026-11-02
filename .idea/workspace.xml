@@ -5,23 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/popola_ordini.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/popola_prodotti.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/aggiungi_pagamento_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/carrello_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/modifica_credenziali_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/modifica_ordine_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/ordini_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/prodotto_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/recupero_password_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/dettaglio_ordine_dipendente_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/prodotti.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/data/prodotti.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/utenti.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/data/utenti.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/gestore_mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/gestore_mail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/gestore_ordini.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/gestore_ordini.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/prodotti.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/utenti.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ordine.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ordine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/popola_ordini.py" beforeDir="false" afterPath="$PROJECT_DIR$/popola_ordini.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/carrello_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/carrello_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/catalogo_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/catalogo_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/dashboard_cliente_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/dashboard_cliente_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/dipendente_dashboard_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/dipendente_dashboard_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/gestione_inventario_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/gestione_inventario_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/gestione_piste_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/gestione_piste_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/login_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/login_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/profilo_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/profilo_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/ordini_dipendente_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/ordini_dipendente_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/ordini_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/ordini_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/prodotto_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/prodotto_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,61 +55,61 @@
 }</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.00036749188302" />
-      <entry key="MS500" value="1.2140294552278514" />
-      <entry key="S2" value="3.060831478505153" />
-      <entry key="S5" value="6.071958097385653" />
-      <entry key="S10" value="8.075612816867645" />
-      <entry key="S30" value="9.899114565979726" />
-      <entry key="S60" value="10.43202117237441" />
-      <entry key="M2" value="10.711480870854537" />
-      <entry key="M5" value="10.883485999662357" />
-      <entry key="M10" value="10.941556982642188" />
-      <entry key="M15" value="10.960996529970991" />
-      <entry key="M30" value="10.980477505345899" />
-      <entry key="H1" value="10.990233557052989" />
-      <entry key="H2" value="10.995115478907046" />
-      <entry key="H4" value="10.997557414459308" />
-      <entry key="D1" value="10.999592857264215" />
-      <entry key="W1" value="10.999941835646323" />
+      <entry key="MS100" value="6.467181673847801E-12" />
+      <entry key="MS500" value="0.005802181502656655" />
+      <entry key="S2" value="0.35221984832109027" />
+      <entry key="S5" value="1.2330578679428417" />
+      <entry key="S10" value="2.678332984883112" />
+      <entry key="S30" value="7.744598551574001" />
+      <entry key="S60" value="13.78850937368786" />
+      <entry key="M2" value="20.939940083520803" />
+      <entry key="M5" value="29.881373175148898" />
+      <entry key="M10" value="37.10235380017437" />
+      <entry key="M15" value="42.32436682030497" />
+      <entry key="M30" value="52.98241580891546" />
+      <entry key="H1" value="63.63118968466997" />
+      <entry key="H2" value="71.7734580636138" />
+      <entry key="H4" value="76.92113053443109" />
+      <entry key="D1" value="81.91386182179198" />
+      <entry key="W1" value="82.84292893771678" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="0.0" />
-      <entry key="S10" value="0.0" />
-      <entry key="S30" value="0.0" />
-      <entry key="S60" value="0.0" />
-      <entry key="M2" value="0.0" />
-      <entry key="M5" value="0.0" />
-      <entry key="M10" value="0.0" />
-      <entry key="M15" value="0.0" />
-      <entry key="M30" value="0.0" />
-      <entry key="H1" value="0.0" />
-      <entry key="H2" value="0.0" />
-      <entry key="H4" value="0.0" />
-      <entry key="D1" value="0.0" />
-      <entry key="W1" value="0.0" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000315718866544" />
+      <entry key="S5" value="1.0158426006121266" />
+      <entry key="S10" value="1.1287074010658944" />
+      <entry key="S30" value="1.7898267290158694" />
+      <entry key="S60" value="2.735133439461588" />
+      <entry key="M2" value="3.8429923655536533" />
+      <entry key="M5" value="4.960357195954614" />
+      <entry key="M10" value="5.506786812008469" />
+      <entry key="M15" value="5.781160829636234" />
+      <entry key="M30" value="6.207739843306528" />
+      <entry key="H1" value="6.535972233165625" />
+      <entry key="H2" value="6.747016862170508" />
+      <entry key="H4" value="6.867661993548337" />
+      <entry key="D1" value="6.977074600984311" />
+      <entry key="W1" value="6.996702873239889" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.674919475781229E-4" />
-      <entry key="MS500" value="0.2231218001393198" />
-      <entry key="S2" value="2.3643179970705335" />
-      <entry key="S5" value="5.689256547979637" />
-      <entry key="S10" value="7.86027736734072" />
-      <entry key="S30" value="9.821152727033795" />
-      <entry key="S60" value="10.392205919369982" />
-      <entry key="M2" value="10.691359707396192" />
-      <entry key="M5" value="10.875385635714583" />
-      <entry key="M10" value="10.937498096098972" />
-      <entry key="M15" value="10.958288667176124" />
-      <entry key="M30" value="10.97912260370878" />
-      <entry key="H1" value="10.989555863482419" />
-      <entry key="H2" value="10.994776571409725" />
-      <entry key="H4" value="10.997387945529637" />
-      <entry key="D1" value="10.99956461033387" />
-      <entry key="W1" value="10.999937800318918" />
+      <entry key="MS100" value="5.096203894779761E-10" />
+      <entry key="MS500" value="0.01605552659523307" />
+      <entry key="S2" value="0.6301291433142184" />
+      <entry key="S5" value="1.7878127647963362" />
+      <entry key="S10" value="3.4548644839805305" />
+      <entry key="S30" value="9.281596018420338" />
+      <entry key="S60" value="16.31518530115338" />
+      <entry key="M2" value="24.631150000936596" />
+      <entry key="M5" value="34.760104833463195" />
+      <entry key="M10" value="42.560876800499486" />
+      <entry key="M15" value="48.06997848530607" />
+      <entry key="M30" value="59.16926081922271" />
+      <entry key="H1" value="70.15533243040521" />
+      <entry key="H2" value="78.5140728965545" />
+      <entry key="H4" value="83.78544426592697" />
+      <entry key="D1" value="88.89035525593788" />
+      <entry key="W1" value="89.83954818180392" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -125,6 +128,7 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.main.executor": "Run",
+    "Python.ordini_dipendente_view.executor": "Run",
     "Python.popola_ordini.executor": "Run",
     "Python.popola_prodotti.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -136,8 +140,10 @@
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "C:/Users/User/PycharmProjects/PassoDellOrsoLaVendetta",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
@@ -151,89 +157,6 @@
       <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\models" />
       <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\controllers" />
     </key>
-  </component>
-  <component name="RunManager" selected="Python.main">
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="PassoDellOrsoLaVendetta" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="~\PycharmProjects\PassoDellOrso\.venv" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="false" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="popola_ordini" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PassoDellOrsoLaVendetta" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="~\PycharmProjects\PassoDellOrso\.venv" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="false" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/popola_ordini.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="popola_prodotti" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PassoDellOrsoLaVendetta" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="~\PycharmProjects\PassoDellOrso\.venv" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="false" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/popola_prodotti.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.popola_prodotti" />
-        <item itemvalue="Python.popola_ordini" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -250,6 +173,8 @@
       <option name="presentableId" value="Default" />
       <updated>1793454445612</updated>
       <workItem from="1793454446659" duration="1966000" />
+      <workItem from="1793623977440" duration="2000" />
+      <workItem from="1793637957157" duration="3565000" />
     </task>
     <servers />
   </component>
@@ -257,6 +182,9 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$main.coverage" NAME="main Coverage Results" MODIFIED="1793456404310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$ordini_dipendente_view.coverage" NAME="ordini_dipendente_view Coverage Results" MODIFIED="1793639702580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/views" />
+    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_ordini.coverage" NAME="popola_ordini Coverage Results" MODIFIED="1793616839610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$main.coverage" NAME="main Coverage Results" MODIFIED="1793641544652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_prodotti.coverage" NAME="popola_prodotti Coverage Results" MODIFIED="1793616802057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

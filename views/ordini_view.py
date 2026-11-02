@@ -48,7 +48,7 @@ class OrdiniView(QWidget):
         self.main_layout.addWidget(self.scroll_area)
 
         # Pulsante Indietro
-        self.btn_indietro = QPushButton("Torna al Profilo")
+        self.btn_indietro = QPushButton("Torna alla Dashboard")
         self.btn_indietro.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_indietro.setFixedSize(250, 45)
         self.btn_indietro.setObjectName("BtnIndietro")
@@ -98,7 +98,8 @@ class OrdiniView(QWidget):
         if not utente:
             return
 
-        storico = getattr(utente, 'storico_ordini', getattr(utente, '_storico_ordini', []))
+        # 1. CORREZIONE: Usiamo l'attributo reale del tuo Cliente
+        storico = getattr(utente, 'ordini', getattr(utente, '_ordini', []))
 
         if not storico:
             lbl_vuoto = QLabel("Non hai ancora effettuato nessun ordine.")
@@ -109,11 +110,19 @@ class OrdiniView(QWidget):
 
         # Cicliamo gli ordini invertendoli (per mostrare prima i più recenti)
         for ordine in reversed(storico):
-            id_ordine = getattr(ordine, 'id_ordine', 'Sconosciuto')
-            data_ordine = getattr(ordine, 'data', 'Data Sconosciuta')
-            stato = getattr(ordine, 'stato', 'IN ELABORAZIONE')
-            totale = getattr(ordine, 'totale', 0.0)
-            lista_prodotti = getattr(ordine, 'prodotti', [])
+            # 2. CORREZIONE: Utilizziamo le property e gli attributi esatti del tuo Ordine
+            id_ordine = ordine.id_ordine
+
+            # Estraiamo la data formattata
+            data_obj = getattr(ordine, '_data', None)
+            data_ordine = data_obj.strftime('%d/%m/%Y %H:%M') if data_obj else "Data Sconosciuta"
+
+            # Gestione sicura dell'Enum StatoOrdine
+            stato_enum = ordine.stato
+            stato = stato_enum.name.replace("_", " ") if hasattr(stato_enum, 'name') else str(stato_enum)
+
+            totale = ordine.prezzo_totale
+            lista_prodotti = ordine.prodotti
 
             # Creazione della Card dell'ordine
             frame = QFrame()
@@ -132,10 +141,11 @@ class OrdiniView(QWidget):
 
             lbl_stato = QLabel(f"Stato: {stato}")
             lbl_stato.setProperty("class", "StatoOrdine")
-            # Cambia colore in base allo stato
-            if stato.upper() == "COMPLETATO":
+
+            # Colori dinamici in base allo stato
+            if "COMPLETATO" in stato.upper():
                 lbl_stato.setStyleSheet("color: #5cb85c; font-weight: bold;")
-            elif stato.upper() == "RESTITUITO" or stato.upper() == "ANNULLATO":
+            elif "RIMBORSO" in stato.upper() or "ANNULLATO" in stato.upper():
                 lbl_stato.setStyleSheet("color: #6c757d; font-weight: bold;")
 
             lbl_totale = QLabel(f"Totale: € {totale:.2f}")
@@ -144,15 +154,16 @@ class OrdiniView(QWidget):
             # Creiamo l'elenco puntato dei prodotti
             testo_prodotti = "Prodotti acquistati:\n"
             for item in lista_prodotti:
-                nome = getattr(item, 'nome', getattr(item, '_nome', 'Prodotto'))
-                prezzo = getattr(item, 'prezzo', getattr(item, '_prezzo', 0.0))
-                qta = getattr(item, 'quantita', getattr(item, '_quantita', 1))
+                # 3. CORREZIONE: Navighiamo dentro ProdottoOrdine per estrarre Prodotto
+                prodotto_reale = item.prodotto
+                nome = prodotto_reale.nome
+                prezzo = prodotto_reale.prezzo
+                qta = item.quantita
                 testo_prodotti += f"  • {qta}x {nome} (€ {prezzo:.2f} cad.)\n"
 
             lbl_prodotti = QLabel(testo_prodotti.strip())
             lbl_prodotti.setProperty("class", "ProdottiLista")
 
-            # Aggiunta al layout sinistro
             lay_info.addWidget(lbl_titolo_ordine)
             lay_info.addWidget(lbl_data)
             lay_info.addWidget(lbl_stato)
@@ -163,22 +174,20 @@ class OrdiniView(QWidget):
             lay_azione = QVBoxLayout()
             lay_azione.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-            btn_modifica = QPushButton("Modifica")
+            btn_modifica = QPushButton("Opzioni Ordine")
             btn_modifica.setObjectName("BtnModifica")
             btn_modifica.setCursor(Qt.CursorShape.PointingHandCursor)
-            btn_modifica.setFixedSize(120, 40)
+            btn_modifica.setFixedSize(130, 40)
 
-            # Usiamo lambda per passare l'oggetto ordine specifico alla funzione
             btn_modifica.clicked.connect(lambda checked, o=ordine: self.vai_a_modifica_ordine(o))
 
-            # Disabilitiamo il tasto modifica se l'ordine è già stato restituito o annullato (opzionale)
-            if stato.upper() in ["RESTITUITO", "ANNULLATO"]:
+            # Se è già in fase di rimborso, disabilitiamo l'interazione
+            if "RIMBORSO" in stato.upper() or "ANNULLATO" in stato.upper():
                 btn_modifica.setEnabled(False)
                 btn_modifica.setStyleSheet("background-color: #cccccc; color: #666666; border-radius: 6px;")
 
             lay_azione.addWidget(btn_modifica)
 
-            # Aggiungiamo le due parti alla card
             lay_card.addLayout(lay_info, stretch=3)
             lay_card.addLayout(lay_azione, stretch=1)
 
@@ -193,5 +202,5 @@ class OrdiniView(QWidget):
                                 "La pagina di modifica ordine non è ancora stata creata in MainWindow.")
 
     def torna_indietro(self):
-        if self.main_window and hasattr(self.main_window, 'mostra_profilo'):
-            self.main_window.mostra_profilo()
+        if self.main_window and hasattr(self.main_window, 'mostra_dashboard_cliente'):
+            self.main_window.mostra_dashboard_cliente()

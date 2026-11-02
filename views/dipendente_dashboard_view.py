@@ -101,17 +101,16 @@ class DipendenteDashboardView(QWidget):
         lbl_titolo_ordini.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lbl_titolo_ordini.setObjectName("HeaderAzzurro")
 
-        # Testo segnaposto (nella versione finale lo popolerai tramite self.gestore_ordini)
-        testo_ordini = QLabel(
-            "- Ordine #999 | Mario Rossi | 320.00 €\n- Ordine #998 | Luigi Neri | [Rimborso Richiesto]")
-        testo_ordini.setStyleSheet("font-size: 14px; color: #333;")
+        # Modifica: Salviamo la label come 'self.testo_ordini_label' per poterla aggiornare
+        self.testo_ordini_label = QLabel("Caricamento ordini...")
+        self.testo_ordini_label.setStyleSheet("font-size: 14px; color: #333;")
 
         self.btn_vedi_ordini = QPushButton("Vedi tutti")
         self.btn_vedi_ordini.setFixedWidth(150)
         self.btn_vedi_ordini.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.w_ordini_layout.addWidget(lbl_titolo_ordini)
-        self.w_ordini_layout.addWidget(testo_ordini)
+        self.w_ordini_layout.addWidget(self.testo_ordini_label)
         self.w_ordini_layout.addWidget(self.btn_vedi_ordini, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # -- WIDGET 2: GESTIONE RAPIDA PISTE --
@@ -122,15 +121,16 @@ class DipendenteDashboardView(QWidget):
         lbl_titolo_piste.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lbl_titolo_piste.setObjectName("HeaderAzzurro")
 
-        testo_piste = QLabel("- Direttissima: [ APERTA ]\n- Raccordo: [ CHIUSA ]")
-        testo_piste.setStyleSheet("font-size: 14px; color: #333;")
+        # Modifica: Salviamo la label come 'self.testo_piste_label' per poterla aggiornare
+        self.testo_piste_label = QLabel("Caricamento piste...")
+        self.testo_piste_label.setStyleSheet("font-size: 14px; color: #333;")
 
         self.btn_vedi_piste = QPushButton("Vedi tutte")
         self.btn_vedi_piste.setFixedWidth(150)
         self.btn_vedi_piste.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.w_piste_layout.addWidget(lbl_titolo_piste)
-        self.w_piste_layout.addWidget(testo_piste)
+        self.w_piste_layout.addWidget(self.testo_piste_label)
         self.w_piste_layout.addWidget(self.btn_vedi_piste, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.content_layout.addWidget(self.widget_ordini)
@@ -195,10 +195,84 @@ class DipendenteDashboardView(QWidget):
         self.btn_inventario.clicked.connect(self.vai_a_inventario)
 
     def aggiorna_vista(self):
-        """Metodo da chiamare quando si accede alla dashboard per aggiornare il nome."""
-        utente = self.gestore_utenti.utente_corrente
+        """Metodo da chiamare quando si accede alla dashboard per aggiornare il nome e i dati."""
+
+        # 1. Aggiorna il nome del dipendente
+        utente = getattr(self.gestore_utenti, 'utente_corrente', None)
         if utente:
             self.lbl_saluto.setText(f"Ciao, {utente.nome} (Dipendente #{getattr(utente, 'id_dipendente', 'N/A')})")
+
+        # 2. Ricarichiamo i file per essere sicuri di avere i dati più recenti
+        if hasattr(self.gestore_utenti, '_carica_dati'):
+            self.gestore_utenti._carica_dati()
+        if hasattr(self.gestore_ordini, '_carica_dati'):
+            self.gestore_ordini._carica_dati()
+
+        # ==========================================
+        # AGGIORNAMENTO TESTO: ULTIMI ORDINI
+        # ==========================================
+        ordini_recenti = getattr(self.gestore_ordini, '_ordini', [])
+        testo_ordini_formattato = ""
+
+        if not ordini_recenti:
+            testo_ordini_formattato = "Nessun ordine presente nel sistema."
+        else:
+            # Prende solo gli ultimi 2 ordini, e li mostra al contrario (dal più recente al più vecchio)
+            for ordine in reversed(ordini_recenti[-2:]):
+                id_ordine = getattr(ordine, 'id_ordine', 'N/A')
+                totale = getattr(ordine, 'prezzo_totale', 0.0)
+
+                # Gestione sicura dello stato
+                stato_enum = getattr(ordine, 'stato', None)
+                stato_str = stato_enum.name.replace("_", " ") if hasattr(stato_enum, 'name') else str(stato_enum)
+
+                # Cerca il nome del cliente
+                nome_cliente = "Sconosciuto"
+                utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
+                for u in utenti:
+                    ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))
+                    if any(getattr(o, 'id_ordine', None) == id_ordine for o in ordini_cliente):
+                        nome_cliente = f"{getattr(u, 'nome', '')} {getattr(u, 'cognome', '')}".strip()
+                        break
+
+                testo_ordini_formattato += f"- Ordine #{id_ordine} | {nome_cliente} | € {totale:.2f} | [{stato_str}]\n"
+
+        self.testo_ordini_label.setText(testo_ordini_formattato.strip())
+
+        # ==========================================
+        # AGGIORNAMENTO TESTO: PISTE
+        # ==========================================
+        testo_piste_formattato = ""
+
+        # Recupera la lista delle piste dal Controller Piste
+        lista_piste = []
+        if hasattr(self.gestore_piste, 'get_tutte_piste') and callable(self.gestore_piste.get_tutte_piste):
+            lista_piste = self.gestore_piste.get_tutte_piste()
+        else:
+            lista_piste = getattr(self.gestore_piste, '_piste', getattr(self.gestore_piste, 'piste', []))
+
+        if not lista_piste:
+            testo_piste_formattato = "Nessuna pista configurata nel sistema."
+        else:
+            # Mostra le prime 2 piste presenti nel sistema
+            for pista in lista_piste[:2]:
+                nome_pista = getattr(pista, 'nome', getattr(pista, '_nome', 'Pista Sconosciuta'))
+
+                # CORREZIONE: Cerca prima 'stato_apertura', poi '_stato_apertura', poi 'stato'
+                stato_enum = getattr(pista, 'stato_apertura',
+                                     getattr(pista, '_stato_apertura', getattr(pista, 'stato', None)))
+
+                # Estrae il testo in modo sicuro dall'Enum
+                if hasattr(stato_enum, 'name'):
+                    stato_str = stato_enum.name.replace("_", " ")
+                elif hasattr(stato_enum, 'value'):
+                    stato_str = str(stato_enum.value).upper()
+                else:
+                    stato_str = str(stato_enum).replace("StatoApertura.", "").upper() if stato_enum else "SCONOSCIUTO"
+
+                testo_piste_formattato += f"- {nome_pista}: [ {stato_str.upper()} ]\n"
+
+        self.testo_piste_label.setText(testo_piste_formattato.strip())
 
     def esegui_logout(self):
         risposta = QMessageBox.question(self, "Logout", "Sei sicuro di voler uscire?",

@@ -18,6 +18,7 @@ from views.modifica_ordine_view import ModificaOrdineView
 from views.carrello_view import CarrelloView
 from views.prodotto_view import ProdottoView
 from views.recupero_password_view import RecuperoPasswordView
+from views.dettaglio_ordine_dipendente_view import DettaglioOrdineDipendenteView
 
 class MainWindow(QMainWindow):
     def __init__(self, gestore_utenti, gestore_ordini, gestore_prodotti, gestore_piste):
@@ -49,7 +50,7 @@ class MainWindow(QMainWindow):
         self.gestione_piste_view = GestionePisteView(self.gestore_piste, main_window=self)
         self.inserimento_dipendente_view = InserimentoDipendenteView(self.gestore_utenti, main_window=self)
         self.dashboard_cliente_view = DashboardClienteView(self.gestore_utenti, self.gestore_piste, main_window=self)
-        self.catalogo_view = CatalogoView(self.gestore_prodotti, main_window=self)
+        self.catalogo_view = CatalogoView(self.gestore_utenti, self.gestore_prodotti, main_window=self)
         self.profilo_view = ProfiloView(self.gestore_utenti, main_window=self)
         self.gestione_inventario_view = GestioneInventarioView(self.gestore_prodotti, main_window=self)
         self.nuovo_prodotto_view = NuovoProdottoView(self.gestore_prodotti, main_window=self)
@@ -61,15 +62,14 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.ordini_view)
         self.modifica_ordine_view = ModificaOrdineView(self.gestore_utenti, self.gestore_ordini, main_window=self)
         self.stacked_widget.addWidget(self.modifica_ordine_view)
-        self.carrello_view = CarrelloView(self.gestore_utenti, main_window=self)
+        self.carrello_view = CarrelloView(self.gestore_utenti, self.gestore_ordini, main_window=self)
         self.stacked_widget.addWidget(self.carrello_view)
-        self.prodotto_view = ProdottoView(self.gestore_utenti, main_window=self)
+        self.prodotto_view = ProdottoView(self.gestore_utenti, self.gestore_prodotti, main_window=self)
         self.stacked_widget.addWidget(self.prodotto_view)
         self.recupero_view = RecuperoPasswordView(self.gestore_utenti, main_window=self)
         self.stacked_widget.addWidget(self.recupero_view)
+        self.dettaglio_ordine_dipendente_view = DettaglioOrdineDipendenteView(self.gestore_ordini, self.gestore_utenti, main_window=self)
 
-
-        # Aggiungiamo le view al QStackedWidget
         self.stacked_widget.addWidget(self.login_view)  # Indice 0
         self.stacked_widget.addWidget(self.registrazione_view)  # Indice 1
         self.stacked_widget.addWidget(self.dipendente_dashboard_view)
@@ -81,8 +81,8 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.profilo_view)
         self.stacked_widget.addWidget(self.gestione_inventario_view)
         self.stacked_widget.addWidget(self.nuovo_prodotto_view)
+        self.stacked_widget.addWidget(self.dettaglio_ordine_dipendente_view)
 
-        # Impostiamo la schermata iniziale da mostrare all'avvio
         self.mostra_login()
 
     def mostra_login(self):
@@ -156,6 +156,10 @@ class MainWindow(QMainWindow):
 
     def mostra_recupero_password(self):
         self.stacked_widget.setCurrentWidget(self.recupero_view)
+
+    def mostra_dettaglio_ordine_dipendente(self, ordine):
+        self.dettaglio_ordine_dipendente_view.imposta_ordine(ordine)
+        self.stacked_widget.setCurrentWidget(self.dettaglio_ordine_dipendente_view)
 
 
 

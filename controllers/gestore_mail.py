@@ -39,8 +39,8 @@ class GestoreMail:
         self._simula_invio(email_destinatario, oggetto, testo)
 
     def inviaEmailConferma(self, email_destinatario: str, ordine) -> bool:
-        oggetto = f"Conferma Ordine #{ordine.id}"
-        testo = f"Il tuo acquisto è andato a buon fine!\nHai acquistato {len(ordine.prodotti)} articoli.\nData ordine: {ordine.dataAcquisto.strftime('%d/%m/%Y')}"
+        oggetto = f"Conferma Ordine #{ordine.id_ordine}"
+        testo = f"Il tuo acquisto è andato a buon fine!\nHai acquistato {len(ordine.prodotti)} articoli.\nData ordine: {ordine._data.strftime('%d/%m/%Y')}"
         return self._simula_invio(email_destinatario, oggetto, testo)
 
     def inviaEmailModificaOrdine(self, email_destinatario: str, ordine) -> None:

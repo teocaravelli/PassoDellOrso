@@ -154,9 +154,7 @@ class LoginView(QWidget):
         utente_loggato = self.gestore_utenti.richiestaAccesso(email, password)
 
         if utente_loggato:
-            # === SALVIAMO L'UTENTE NEL GESTORE E NEL CONTROLLER ===
             self.gestore_utenti.utente_corrente = utente_loggato
-            # (Se nel tuo GestoreUtenti il metodo per impostarlo è un altro, ad es. set_utente_corrente, usa quello)
 
             if isinstance(utente_loggato, Dipendente):
                 self.main_window.mostra_area_dipendente()

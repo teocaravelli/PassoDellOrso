@@ -1,4 +1,3 @@
-from argparse import Namespace
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QFrame, QMessageBox, QSpinBox
@@ -7,9 +6,11 @@ from PyQt6.QtCore import Qt
 
 
 class ProdottoView(QWidget):
-    def __init__(self, gestore_utenti, main_window=None):
+    # 1. MODIFICA: Aggiunto gestore_prodotti al costruttore
+    def __init__(self, gestore_utenti, gestore_prodotti, main_window=None):
         super().__init__()
         self.gestore_utenti = gestore_utenti
+        self.gestore_prodotti = gestore_prodotti
         self.main_window = main_window
         self.prodotto_corrente = None
 
@@ -18,29 +19,25 @@ class ProdottoView(QWidget):
         self.applica_stili()
 
     def setup_ui(self):
-        # Layout principale centrato
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.main_layout.setSpacing(15)
         self.main_layout.setContentsMargins(20, 20, 20, 20)
 
-        # Riquadro Principale dei Dettagli (Con bordo e sfondo visibili)
         self.frame_main = QFrame()
         self.frame_main.setObjectName("FrameMain")
-        self.frame_main.setFixedSize(760, 440)  # Dimensioni fisse per contenere comodamente tutto
+        self.frame_main.setFixedSize(760, 440)
 
         self.layout_frame = QHBoxLayout(self.frame_main)
         self.layout_frame.setContentsMargins(30, 30, 30, 30)
         self.layout_frame.setSpacing(30)
 
-        # --- SINISTRA: Immagine Placeholder ---
         self.lbl_immagine = QLabel("🏂")
         self.lbl_immagine.setObjectName("ImgBox")
         self.lbl_immagine.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_immagine.setFixedSize(200, 200)
         self.layout_frame.addWidget(self.lbl_immagine, alignment=Qt.AlignmentFlag.AlignTop)
 
-        # --- DESTRA: Dettagli e Azioni ---
         self.layout_dettagli = QVBoxLayout()
         self.layout_dettagli.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.layout_dettagli.setSpacing(6)
@@ -71,7 +68,6 @@ class ProdottoView(QWidget):
 
         self.layout_dettagli.addSpacing(10)
 
-        # Selezione Quantità e Bottone Carrello (Disposti in colonna o riga ottimizzata per evitare tagli)
         self.layout_azioni = QHBoxLayout()
         self.layout_azioni.setSpacing(10)
 
@@ -98,7 +94,6 @@ class ProdottoView(QWidget):
 
         self.main_layout.addWidget(self.frame_main, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Bottone Indietro in basso
         self.btn_indietro = QPushButton("Torna al Catalogo")
         self.btn_indietro.setObjectName("BtnIndietro")
         self.btn_indietro.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -108,48 +103,23 @@ class ProdottoView(QWidget):
     def applica_stili(self):
         self.setStyleSheet("""
             ProdottoView { background-color: white; font-family: Arial, sans-serif; }
-
-            /* Bordo e sfondo del riquadro principale ben visibili */
-            QFrame#FrameMain { 
-                border: 2px solid #1a365d; 
-                border-radius: 12px; 
-                background-color: #f8fcfd; 
-            }
-
+            QFrame#FrameMain { border: 2px solid #1a365d; border-radius: 12px; background-color: #f8fcfd; }
             QLabel { background-color: transparent; border: none; color: #333; }
-
-            QLabel#ImgBox { 
-                background-color: #add8e6; 
-                border-radius: 10px; 
-                font-size: 70px; 
-            }
+            QLabel#ImgBox { background-color: #add8e6; border-radius: 10px; font-size: 70px; }
             QLabel#LblNome { font-size: 22px; font-weight: bold; color: #1a365d; }
             QLabel#LblPrezzo { font-size: 18px; font-weight: bold; color: #d9534f; }
             QLabel#LblDesc { font-size: 13px; color: #555; }
             QLabel#LblExtra { font-size: 12px; color: #222; line-height: 130%; }
             QLabel#LblQta { font-size: 13px; font-weight: bold; color: #1a365d; }
-
             QSpinBox#SpinQta { 
-                font-size: 14px; 
-                font-weight: bold;
-                padding: 2px; 
-                border: 1px solid #1a365d; 
-                border-radius: 5px; 
-                background-color: white; 
-                color: #1a365d;
+                font-size: 14px; font-weight: bold; padding: 2px; 
+                border: 1px solid #1a365d; border-radius: 5px; 
+                background-color: white; color: #1a365d;
             }
-
-            QPushButton#BtnAggiungi { 
-                background-color: #5cb85c; color: white; font-weight: bold; 
-                font-size: 13px; border: none; border-radius: 6px; 
-            }
+            QPushButton#BtnAggiungi { background-color: #5cb85c; color: white; font-weight: bold; font-size: 13px; border: none; border-radius: 6px; }
             QPushButton#BtnAggiungi:hover { background-color: #4cae4c; }
             QPushButton#BtnAggiungi:disabled { background-color: #cccccc; color: #666666; }
-
-            QPushButton#BtnIndietro { 
-                background-color: #1a365d; color: white; font-weight: bold; 
-                font-size: 14px; border: none; border-radius: 6px; 
-            }
+            QPushButton#BtnIndietro { background-color: #1a365d; color: white; font-weight: bold; font-size: 14px; border: none; border-radius: 6px; }
             QPushButton#BtnIndietro:hover { background-color: #2a528a; }
         """)
 
@@ -171,23 +141,6 @@ class ProdottoView(QWidget):
                         return v
         return default
 
-    def _analizza_scorte_prodotto(self, prodotto):
-        nome_classe = type(prodotto).__name__
-        qta_trovata = getattr(prodotto, 'quantita', None)
-        if hasattr(prodotto, 'getQuantita') and callable(prodotto.getQuantita):
-            qta_trovata = prodotto.getQuantita()
-
-        ha_qta = nome_classe in ["Attrezzatura", "Lezione"] or qta_trovata is not None
-        if nome_classe in ["SkiPass", "Assicurazione"]:
-            ha_qta = False
-
-        if ha_qta:
-            if qta_trovata is None:
-                qta_trovata = 5
-            return True, int(qta_trovata), nome_classe
-        else:
-            return False, None, nome_classe
-
     def imposta_prodotto(self, prodotto):
         self.prodotto_corrente = prodotto
 
@@ -201,9 +154,10 @@ class ProdottoView(QWidget):
         self.lbl_prezzo.setText(f"€ {float(prezzo):.2f}")
         self.lbl_descrizione.setText(str(desc))
 
-        ha_quantita, qta_inventario, categoria = self._analizza_scorte_prodotto(prodotto)
+        ha_quantita = hasattr(prodotto, 'quantita')
+        qta_inventario = getattr(prodotto, 'quantita', 0) if ha_quantita else None
+        categoria = type(prodotto).__name__
 
-        # Informazioni compatte e pulite
         info_html = f"<b>Info:</b> ID: {id_p} | Categoria: {categoria}"
         if ha_quantita:
             info_html += f" | Magazzino: {qta_inventario}"
@@ -225,18 +179,15 @@ class ProdottoView(QWidget):
             val_l = livello.name if hasattr(livello, 'name') else livello
             info_html += f"• <b>Livello:</b> {val_l} "
 
-        formula = self._leggi_valore(prodotto, 'getFormulaTemporale',
-                                     ['formula_temporale', 'formulaTemporale', '_formula_temporale'], None)
+        formula = self._leggi_valore(prodotto, 'getFormulaTemporale', ['formula_temporale', '_formula_temporale'], None)
         if formula:
             val_f = formula.name if hasattr(formula, 'name') else formula
             info_html += f"• <b>Formula:</b> {val_f} "
 
-        data_singola = self._leggi_valore(prodotto, 'getData', ['data', '_data'], None)
-        if data_singola: info_html += f"• <b>Data/Ora:</b> {data_singola} "
-
-        d_inizio = self._leggi_valore(prodotto, 'getDataInizio', ['data_inizio', 'dataInizio', '_data_inizio'], None)
-        d_fine = self._leggi_valore(prodotto, 'getDataFine', ['data_fine', 'dataFine', '_data_fine'], None)
+        d_inizio = self._leggi_valore(prodotto, 'getDataInizio', ['data_inizio', '_data_inizio'], None)
+        d_fine = self._leggi_valore(prodotto, 'getDataFine', ['data_fine', '_data_fine'], None)
         if d_inizio and d_fine:
+            # 2. MODIFICA: Corretto l'errore di formattazione stringa che mandava in crash la View
             info_html += f"• <b>Validità:</b> {d_inizio} - {d_fine}"
 
         self.lbl_info_extra.setText(info_html)
@@ -255,8 +206,6 @@ class ProdottoView(QWidget):
                 self.lbl_disponibilita.setText("✖ Esaurito")
                 self.lbl_disponibilita.setStyleSheet("color: #d9534f; font-weight: bold; font-size: 12px;")
                 self.spin_qta.setEnabled(False)
-                self.spin_qta.setMinimum(0)
-                self.spin_qta.setMaximum(0)
                 self.spin_qta.setValue(0)
                 self.btn_aggiungi.setEnabled(False)
                 self.btn_aggiungi.setText("Esaurito")
@@ -277,54 +226,29 @@ class ProdottoView(QWidget):
                 self.btn_aggiungi.setEnabled(False)
                 self.btn_aggiungi.setText("Non Disponibile")
 
+    # 3. MODIFICA: Logica MVC perfetta. Delega tutto al controller e salva su disco!
     def aggiungi_al_carrello(self):
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
         if not utente:
             QMessageBox.warning(self, "Errore", "Devi effettuare l'accesso per aggiungere prodotti al carrello.")
             return
 
-        if not hasattr(utente, 'carrello'):
-            utente.carrello = []
-
         qta_selezionata = self.spin_qta.value()
-        id_prod = getattr(self.prodotto_corrente, 'id', None)
-        nome = getattr(self.prodotto_corrente, 'nome', 'Prodotto')
-        prezzo = getattr(self.prodotto_corrente, 'prezzo', 0.0)
-        ha_quantita, qta_inventario, categoria = self._analizza_scorte_prodotto(self.prodotto_corrente)
 
-        if ha_quantita:
-            gia_nel_carrello = sum(
-                getattr(item, 'quantita', 1) for item in utente.carrello
-                if getattr(item, 'id_prodotto', None) == id_prod or getattr(item, 'nome', '') == nome
-            )
-            if gia_nel_carrello + qta_selezionata > qta_inventario:
-                rimanenti = max(0, qta_inventario - gia_nel_carrello)
-                QMessageBox.warning(
-                    self, "Limite Quantità Superato",
-                    f"La quantità massima disponibile è {qta_inventario}.\n"
-                    f"Ne hai già {gia_nel_carrello} nel carrello, puoi aggiungerne al massimo {rimanenti}."
-                )
-                return
+        try:
+            # Chiama il GestoreProdotti che fa tutti i controlli (limiti, scorte, ecc.) e aggiunge l'item
+            self.gestore_prodotti.aggiungiProdotto(utente, self.prodotto_corrente, qta_selezionata)
 
-        prodotto_carrello = Namespace(
-            tipo_oggetto="ProdottoCarrello",
-            id_prodotto=id_prod,
-            nome=nome,
-            prezzo=float(prezzo),
-            quantita=qta_selezionata,
-            categoria=categoria,
-            ha_quantita_limitata=ha_quantita
-        )
-
-        utente.carrello.append(prodotto_carrello)
-
-        if hasattr(self.gestore_utenti, '_salva_dati'):
+            # Salva l'utente per mantenere il carrello in memoria
             self.gestore_utenti._salva_dati()
-        elif hasattr(self.gestore_utenti, 'salva_dati'):
-            self.gestore_utenti.salva_dati()
 
-        QMessageBox.information(self, "Aggiunto", f"{qta_selezionata}x '{nome}' aggiunto al carrello!")
-        self.torna_al_catalogo()
+            QMessageBox.information(self, "Aggiunto",
+                                    f"{qta_selezionata}x '{self.prodotto_corrente.nome}' aggiunto al carrello!")
+            self.torna_al_catalogo()
+
+        except ValueError as e:
+            # Cattura in automatico eventuali avvisi del controller (es. quantità massima superata)
+            QMessageBox.warning(self, "Attenzione", str(e))
 
     def torna_al_catalogo(self):
         if self.main_window and hasattr(self.main_window, 'mostra_catalogo'):

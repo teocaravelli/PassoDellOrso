@@ -115,6 +115,13 @@ class OrdiniDipendenteView(QWidget):
 
     def aggiorna_vista(self):
         self.tabella_ordini.setRowCount(0)
+
+        # 1. Forza la ricarica dei file per leggere le ultimissime azioni dei clienti
+        if hasattr(self.gestore_utenti, '_carica_dati'):
+            self.gestore_utenti._carica_dati()
+        if hasattr(self.gestore_ordini, '_carica_dati'):
+            self.gestore_ordini._carica_dati()
+
         ordini = self.gestore_ordini._ordini
 
         self.tabella_ordini.setRowCount(len(ordini))
@@ -126,14 +133,23 @@ class OrdiniDipendenteView(QWidget):
             id_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 0, id_item)
 
-            # 1. CLIENTE (Reverse Lookup)
+            # 1. CLIENTE & AUTO-SYNC DELLO STATO
             dati_cliente = "Cliente Sconosciuto"
+            stato_aggiornato = ordine.stato  # Di base usa lo stato lato dipendente
+
             for utente in self.gestore_utenti._utenti:
-                if hasattr(utente, 'ordini'):  # Controlla se è un Cliente
-                    # Verifica se questo specifico ordine è nella sua lista
-                    if any(o.id_ordine == ordine.id_ordine for o in utente.ordini):
-                        dati_cliente = f"{utente.nome} {utente.cognome}\n({utente.email})"
-                        break  # Trovato, usciamo dal ciclo
+                if hasattr(utente, 'ordini'):
+                    for o in utente.ordini:
+                        if o.id_ordine == ordine.id_ordine:
+                            dati_cliente = f"{utente.nome} {utente.cognome}\n({utente.email})"
+                            # Catturiamo lo stato dal profilo del cliente (che è sempre il più recente)
+                            stato_aggiornato = o.stato
+                            break
+
+            # AUTO-RIPARAZIONE: Se il cliente ha cambiato stato e il database ordini non lo sa, lo correggiamo e salviamo!
+            if ordine.stato != stato_aggiornato:
+                ordine.stato = stato_aggiornato
+                self.gestore_ordini._salva_dati()
 
             cliente_item = QTableWidgetItem(dati_cliente)
             cliente_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -152,8 +168,10 @@ class OrdiniDipendenteView(QWidget):
             totale_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 3, totale_item)
 
-            # 4. Stato
-            stato_item = QTableWidgetItem(ordine.stato.name.replace("_", " "))
+            # 4. Stato (Ora usa lo stato_aggiornato garantito)
+            stato_str = stato_aggiornato.name.replace("_", " ") if hasattr(stato_aggiornato, 'name') else str(
+                stato_aggiornato)
+            stato_item = QTableWidgetItem(stato_str)
             stato_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 4, stato_item)
 
@@ -173,5 +191,14 @@ class OrdiniDipendenteView(QWidget):
             self.main_window.mostra_area_dipendente()
 
     def apri_dettaglio_ordine(self, id_ordine):
-        QMessageBox.information(self, "Gestione Ordine",
-                                f"Apertura dettagli per l'Ordine #{id_ordine}.")
+        if hasattr(self.gestore_ordini, '_carica_dati'):
+            self.gestore_ordini._carica_dati()
+
+        ordine_selezionato = None
+        for o in self.gestore_ordini._ordini:
+            if o.id_ordine == id_ordine:
+                ordine_selezionato = o
+                break
+
+        if ordine_selezionato and self.main_window:
+            self.main_window.mostra_dettaglio_ordine_dipendente(ordine_selezionato)
