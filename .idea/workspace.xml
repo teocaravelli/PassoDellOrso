@@ -4,27 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/views/dettaglio_ordine_dipendente_view.py" afterDir="false" />
+    <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="sistemato il necessario">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/gestore_mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/gestore_mail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/gestore_ordini.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/gestore_ordini.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/prodotti.pickle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/utenti.pickle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ordine.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ordine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/popola_ordini.py" beforeDir="false" afterPath="$PROJECT_DIR$/popola_ordini.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/carrello_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/carrello_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/catalogo_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/catalogo_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/dashboard_cliente_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/dashboard_cliente_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/dipendente_dashboard_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/dipendente_dashboard_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/gestione_inventario_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/gestione_inventario_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/gestione_piste_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/gestione_piste_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/login_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/login_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/ordini_dipendente_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/ordini_dipendente_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/ordini_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/ordini_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/prodotto_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/prodotto_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/piste.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/data/piste.pickle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,61 +37,61 @@
 }</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="6.467181673847801E-12" />
-      <entry key="MS500" value="0.005802181502656655" />
-      <entry key="S2" value="0.35221984832109027" />
-      <entry key="S5" value="1.2330578679428417" />
-      <entry key="S10" value="2.678332984883112" />
-      <entry key="S30" value="7.744598551574001" />
-      <entry key="S60" value="13.78850937368786" />
-      <entry key="M2" value="20.939940083520803" />
-      <entry key="M5" value="29.881373175148898" />
-      <entry key="M10" value="37.10235380017437" />
-      <entry key="M15" value="42.32436682030497" />
-      <entry key="M30" value="52.98241580891546" />
-      <entry key="H1" value="63.63118968466997" />
-      <entry key="H2" value="71.7734580636138" />
-      <entry key="H4" value="76.92113053443109" />
-      <entry key="D1" value="81.91386182179198" />
-      <entry key="W1" value="82.84292893771678" />
+      <entry key="MS100" value="1.0000550089788591" />
+      <entry key="MS500" value="1.165796842064825" />
+      <entry key="S2" value="2.7928985842261866" />
+      <entry key="S5" value="5.379557026066246" />
+      <entry key="S10" value="8.007292882991234" />
+      <entry key="S30" value="14.331357075493408" />
+      <entry key="S60" value="20.91220981313539" />
+      <entry key="M2" value="28.60657526691609" />
+      <entry key="M5" value="38.15088317568926" />
+      <entry key="M10" value="45.6584963150407" />
+      <entry key="M15" value="50.99089039679973" />
+      <entry key="M30" value="61.77750071415353" />
+      <entry key="H1" value="72.50969847699955" />
+      <entry key="H2" value="80.70544003128632" />
+      <entry key="H4" value="85.88482307940397" />
+      <entry key="D1" value="90.90743906589007" />
+      <entry key="W1" value="91.84200152537512" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000315718866544" />
-      <entry key="S5" value="1.0158426006121266" />
-      <entry key="S10" value="1.1287074010658944" />
-      <entry key="S30" value="1.7898267290158694" />
-      <entry key="S60" value="2.735133439461588" />
-      <entry key="M2" value="3.8429923655536533" />
-      <entry key="M5" value="4.960357195954614" />
-      <entry key="M10" value="5.506786812008469" />
-      <entry key="M15" value="5.781160829636234" />
-      <entry key="M30" value="6.207739843306528" />
-      <entry key="H1" value="6.535972233165625" />
-      <entry key="H2" value="6.747016862170508" />
-      <entry key="H4" value="6.867661993548337" />
-      <entry key="D1" value="6.977074600984311" />
-      <entry key="W1" value="6.996702873239889" />
+      <entry key="MS100" value="1.447924780795114E-28" />
+      <entry key="MS500" value="2.704887458189884E-6" />
+      <entry key="S2" value="0.04055561684376374" />
+      <entry key="S5" value="0.2818651232896739" />
+      <entry key="S10" value="0.5945506151420391" />
+      <entry key="S30" value="1.4454846234309053" />
+      <entry key="S60" value="2.457988023854578" />
+      <entry key="M2" value="3.6430920388403423" />
+      <entry key="M5" value="4.855491518997595" />
+      <entry key="M10" value="5.44826706727592" />
+      <entry key="M15" value="5.740130961908505" />
+      <entry key="M30" value="6.1856719334166534" />
+      <entry key="H1" value="6.524344518100347" />
+      <entry key="H2" value="6.741012605248375" />
+      <entry key="H4" value="6.864605503107784" />
+      <entry key="D1" value="6.976556974134323" />
+      <entry key="W1" value="6.99662871615842" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="5.096203894779761E-10" />
-      <entry key="MS500" value="0.01605552659523307" />
-      <entry key="S2" value="0.6301291433142184" />
-      <entry key="S5" value="1.7878127647963362" />
-      <entry key="S10" value="3.4548644839805305" />
-      <entry key="S30" value="9.281596018420338" />
-      <entry key="S60" value="16.31518530115338" />
-      <entry key="M2" value="24.631150000936596" />
-      <entry key="M5" value="34.760104833463195" />
-      <entry key="M10" value="42.560876800499486" />
-      <entry key="M15" value="48.06997848530607" />
-      <entry key="M30" value="59.16926081922271" />
-      <entry key="H1" value="70.15533243040521" />
-      <entry key="H2" value="78.5140728965545" />
-      <entry key="H4" value="83.78544426592697" />
-      <entry key="D1" value="88.89035525593788" />
-      <entry key="W1" value="89.83954818180392" />
+      <entry key="MS100" value="0.946109328919285" />
+      <entry key="MS500" value="1.152744211525868" />
+      <entry key="S2" value="2.794785663679322" />
+      <entry key="S5" value="5.5239942987734505" />
+      <entry key="S10" value="8.409065811210901" />
+      <entry key="S30" value="15.56934054332506" />
+      <entry key="S60" value="23.181065525581" />
+      <entry key="M2" value="32.10484360754628" />
+      <entry key="M5" value="42.92609075212855" />
+      <entry key="M10" value="51.0588188445321" />
+      <entry key="M15" value="56.695595055328646" />
+      <entry key="M30" value="67.94228719526588" />
+      <entry key="H1" value="79.02220205845876" />
+      <entry key="H2" value="87.44004004613812" />
+      <entry key="H4" value="92.74607367859231" />
+      <entry key="D1" value="97.88341356057225" />
+      <entry key="W1" value="98.83854641958179" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -124,32 +106,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.main.executor": "Run",
-    "Python.ordini_dipendente_view.executor": "Run",
-    "Python.popola_ordini.executor": "Run",
-    "Python.popola_prodotti.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/User/PycharmProjects/PassoDellOrsoLaVendetta",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ordini_dipendente_view.executor&quot;: &quot;Run&quot;,
+    &quot;Python.popola_ordini.executor&quot;: &quot;Run&quot;,
+    &quot;Python.popola_prodotti.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/PycharmProjects/PassoDellOrsoLaVendetta&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;python.packages.toolwindow.project.migrated.to.right.top.v2&quot;: &quot;true&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta" />
@@ -175,16 +157,31 @@
       <workItem from="1793454446659" duration="1966000" />
       <workItem from="1793623977440" duration="2000" />
       <workItem from="1793637957157" duration="3565000" />
+      <workItem from="1793641644709" duration="41000" />
+      <workItem from="1793718499755" duration="154000" />
     </task>
+    <task id="LOCAL-00001" summary="sistemato il necessario">
+      <option name="closed" value="true" />
+      <created>1793641674854</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1793641674854</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="sistemato il necessario" />
+    <option name="LAST_COMMIT_MESSAGE" value="sistemato il necessario" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$ordini_dipendente_view.coverage" NAME="ordini_dipendente_view Coverage Results" MODIFIED="1793639702580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/views" />
     <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_ordini.coverage" NAME="popola_ordini Coverage Results" MODIFIED="1793616839610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$main.coverage" NAME="main Coverage Results" MODIFIED="1793641544652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$main.coverage" NAME="main Coverage Results" MODIFIED="1793718506488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_prodotti.coverage" NAME="popola_prodotti Coverage Results" MODIFIED="1793616802057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
