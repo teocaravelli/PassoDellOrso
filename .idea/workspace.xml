@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="sistemato il necessario">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/piste.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/data/piste.pickle" afterDir="false" />
-    </list>
+    <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="sistemato il necessario" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -160,7 +157,7 @@
       <workItem from="1793641644709" duration="41000" />
       <workItem from="1793718499755" duration="154000" />
       <workItem from="1793988691580" duration="1017000" />
-      <workItem from="1794305245496" duration="355000" />
+      <workItem from="1794305245496" duration="880000" />
     </task>
     <task id="LOCAL-00001" summary="sistemato il necessario">
       <option name="closed" value="true" />
@@ -178,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1793988731517</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="sistemato il necessario">
+      <option name="closed" value="true" />
+      <created>1794305617765</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1794305617765</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
