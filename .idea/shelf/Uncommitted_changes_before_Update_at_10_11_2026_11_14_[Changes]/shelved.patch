@@ -1,0 +1,272 @@
+Index: views/dettaglio_ordine_dipendente_view.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from PyQt6.QtWidgets import (\r\n    QWidget, QVBoxLayout, QHBoxLayout, QLabel,\r\n    QPushButton, QTableWidget, QTableWidgetItem,\r\n    QHeaderView, QFrame, QMessageBox\r\n)\r\nfrom PyQt6.QtCore import Qt\r\n\r\nfrom models.enums import StatoOrdine\r\n\r\n\r\nclass DettaglioOrdineDipendenteView(QWidget):\r\n    def __init__(self, gestore_ordini, gestore_utenti, main_window=None):\r\n        super().__init__()\r\n        self.gestore_ordini = gestore_ordini\r\n        self.gestore_utenti = gestore_utenti\r\n        self.main_window = main_window\r\n        self.ordine_corrente = None\r\n\r\n        self.setup_ui()\r\n        self.connetti_segnali()\r\n        self.applica_stili()\r\n\r\n    def setup_ui(self):\r\n        self.main_layout = QVBoxLayout(self)\r\n        self.main_layout.setContentsMargins(30, 30, 30, 30)\r\n        self.main_layout.setSpacing(20)\r\n\r\n        # -- INTESTAZIONE --\r\n        self.header_layout = QHBoxLayout()\r\n        self.lbl_titolo = QLabel(\"DETTAGLIO ORDINE\")\r\n        self.lbl_titolo.setObjectName(\"TitoloAzzurro\")\r\n        self.lbl_titolo.setAlignment(Qt.AlignmentFlag.AlignCenter)\r\n        self.header_layout.addWidget(self.lbl_titolo)\r\n        self.main_layout.addLayout(self.header_layout)\r\n\r\n        # -- PANNELLO INFORMAZIONI GENERALI --\r\n        self.info_frame = QFrame()\r\n        self.info_frame.setObjectName(\"InfoFrame\")\r\n        self.info_layout = QVBoxLayout(self.info_frame)\r\n        self.info_layout.setSpacing(10)\r\n\r\n        self.lbl_cliente = QLabel(\"Cliente: \")\r\n        self.lbl_data = QLabel(\"Data: \")\r\n        self.lbl_stato = QLabel(\"Stato: \")\r\n        self.lbl_totale = QLabel(\"Totale: \")\r\n\r\n        for lbl in [self.lbl_cliente, self.lbl_data, self.lbl_stato, self.lbl_totale]:\r\n            lbl.setStyleSheet(\"font-size: 15px; color: #333;\")\r\n            self.info_layout.addWidget(lbl)\r\n\r\n        self.main_layout.addWidget(self.info_frame)\r\n\r\n        # -- TABELLA PRODOTTI --\r\n        self.lbl_prodotti = QLabel(\"Prodotti Acquistati:\")\r\n        self.lbl_prodotti.setStyleSheet(\"font-weight: bold; font-size: 16px; color: #1a365d;\")\r\n        self.main_layout.addWidget(self.lbl_prodotti)\r\n\r\n        self.tabella_prodotti = QTableWidget()\r\n        self.tabella_prodotti.setColumnCount(4)\r\n        self.tabella_prodotti.setHorizontalHeaderLabels([\"Prodotto\", \"Quantità\", \"Prezzo Cad.\", \"Subtotale\"])\r\n\r\n        header = self.tabella_prodotti.horizontalHeader()\r\n        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)\r\n        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)\r\n        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)\r\n        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)\r\n\r\n        self.tabella_prodotti.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)\r\n        self.tabella_prodotti.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)\r\n        self.main_layout.addWidget(self.tabella_prodotti)\r\n\r\n        # -- PANNELLO AZIONI RIMBORSO (Nascosto di default) --\r\n        self.pannello_rimborso = QFrame()\r\n        self.pannello_rimborso.setObjectName(\"PannelloRimborso\")\r\n        self.layout_rimborso = QHBoxLayout(self.pannello_rimborso)\r\n\r\n        self.lbl_avviso_rimborso = QLabel(\"Il cliente ha richiesto un rimborso per questo ordine.\")\r\n        self.lbl_avviso_rimborso.setStyleSheet(\"font-weight: bold; color: #856404; font-size: 14px;\")\r\n\r\n        self.btn_rifiuta = QPushButton(\"Rifiuta Rimborso\")\r\n        self.btn_rifiuta.setObjectName(\"BtnRifiuta\")\r\n        self.btn_rifiuta.setCursor(Qt.CursorShape.PointingHandCursor)\r\n\r\n        self.btn_approva = QPushButton(\"Approva Rimborso\")\r\n        self.btn_approva.setObjectName(\"BtnApprova\")\r\n        self.btn_approva.setCursor(Qt.CursorShape.PointingHandCursor)\r\n\r\n        self.layout_rimborso.addWidget(self.lbl_avviso_rimborso, stretch=1)\r\n        self.layout_rimborso.addWidget(self.btn_rifiuta)\r\n        self.layout_rimborso.addWidget(self.btn_approva)\r\n\r\n        self.main_layout.addWidget(self.pannello_rimborso)\r\n        self.pannello_rimborso.hide()  # Lo mostriamo solo se serve\r\n\r\n        # -- BOTTONE INDIETRO --\r\n        self.btn_indietro = QPushButton(\"Torna alla Lista Ordini\")\r\n        self.btn_indietro.setObjectName(\"BtnIndietro\")\r\n        self.btn_indietro.setCursor(Qt.CursorShape.PointingHandCursor)\r\n        self.btn_indietro.setFixedWidth(250)\r\n        self.main_layout.addWidget(self.btn_indietro, alignment=Qt.AlignmentFlag.AlignLeft)\r\n\r\n    def applica_stili(self):\r\n        self.setStyleSheet(\"\"\"\r\n            QWidget { background-color: white; font-family: Arial, sans-serif; }\r\n            #TitoloAzzurro {\r\n                background-color: #add8e6; color: #1a365d; font-weight: bold;\r\n                font-size: 20px; padding: 15px; border-radius: 5px; border: 2px solid #1a365d;\r\n            }\r\n            #InfoFrame {\r\n                border: 2px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9; padding: 10px;\r\n            }\r\n            #PannelloRimborso {\r\n                background-color: #fff3cd; border: 2px solid #ffeeba; border-radius: 8px; padding: 5px;\r\n            }\r\n            QTableWidget {\r\n                alternate-background-color: #f0f8ff; gridline-color: #add8e6;\r\n                border: 2px solid #1a365d; border-radius: 5px; font-size: 14px;\r\n            }\r\n            QHeaderView::section {\r\n                background-color: #1a365d; color: white; font-weight: bold;\r\n                padding: 5px; border: 1px solid #1a365d;\r\n            }\r\n            QPushButton {\r\n                background-color: #1a365d; color: white; font-weight: bold; padding: 10px; border-radius: 5px;\r\n            }\r\n            QPushButton:hover { background-color: #2a528a; }\r\n            #BtnIndietro { background-color: #666; }\r\n            #BtnIndietro:hover { background-color: #888; }\r\n            #BtnApprova { background-color: #28a745; }\r\n            #BtnApprova:hover { background-color: #218838; }\r\n            #BtnRifiuta { background-color: #dc3545; }\r\n            #BtnRifiuta:hover { background-color: #c82333; }\r\n        \"\"\")\r\n\r\n    def connetti_segnali(self):\r\n        self.btn_indietro.clicked.connect(self.torna_indietro)\r\n        self.btn_approva.clicked.connect(self.accetta_rimborso)\r\n        self.btn_rifiuta.clicked.connect(self.rifiuta_rimborso)\r\n\r\n    def imposta_ordine(self, ordine):\r\n        self.ordine_corrente = ordine\r\n\r\n        # 1. Intestazione e Dati Generali\r\n        self.lbl_titolo.setText(f\"DETTAGLIO ORDINE #{ordine.id_ordine}\")\r\n\r\n        data_str = getattr(ordine, '_data', None)\r\n        if data_str:\r\n            data_str = data_str.strftime('%d/%m/%Y %H:%M')\r\n        self.lbl_data.setText(f\"<b>Data:</b> {data_str}\")\r\n\r\n        self.lbl_totale.setText(f\"<b>Totale Pagato:</b> € {ordine.prezzo_totale:.2f}\")\r\n\r\n        # Ricerca del cliente proprietario dell'ordine\r\n        nome_cliente = \"Cliente Sconosciuto\"\r\n        utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))\r\n        for u in utenti:\r\n            ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))\r\n            if any(o.id_ordine == ordine.id_ordine for o in ordini_cliente):\r\n                nome_cliente = f\"{u.nome} {u.cognome} ({u.email})\"\r\n                break\r\n        self.lbl_cliente.setText(f\"<b>Cliente:</b> {nome_cliente}\")\r\n\r\n        # Gestione Stato e Colori\r\n        stato_enum = ordine.stato\r\n        stato_str = stato_enum.name.replace(\"_\", \" \") if hasattr(stato_enum, 'name') else str(stato_enum)\r\n\r\n        colore_stato = \"#333\"\r\n        if \"COMPLETATO\" in stato_str:\r\n            colore_stato = \"#5cb85c\"\r\n        elif \"RICHIESTO\" in stato_str:\r\n            colore_stato = \"#d9534f\"\r\n\r\n        self.lbl_stato.setText(f\"<b>Stato Attuale:</b> <span style='color: {colore_stato};'>{stato_str}</span>\")\r\n\r\n        # 2. Popolamento Tabella Prodotti\r\n        prodotti = ordine.prodotti\r\n        self.tabella_prodotti.setRowCount(len(prodotti))\r\n        self.tabella_prodotti.setAlternatingRowColors(True)\r\n\r\n        for riga, item in enumerate(prodotti):\r\n            prodotto = item.prodotto\r\n\r\n            nome_item = QTableWidgetItem(prodotto.nome)\r\n            self.tabella_prodotti.setItem(riga, 0, nome_item)\r\n\r\n            qta_item = QTableWidgetItem(str(item.quantita))\r\n            qta_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)\r\n            self.tabella_prodotti.setItem(riga, 1, qta_item)\r\n\r\n            prezzo_item = QTableWidgetItem(f\"€ {prodotto.prezzo:.2f}\")\r\n            prezzo_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)\r\n            self.tabella_prodotti.setItem(riga, 2, prezzo_item)\r\n\r\n            subtotale = prodotto.prezzo * item.quantita\r\n            sub_item = QTableWidgetItem(f\"€ {subtotale:.2f}\")\r\n            sub_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)\r\n            self.tabella_prodotti.setItem(riga, 3, sub_item)\r\n\r\n        # 3. Logica visualizzazione azioni rimborso\r\n        stato_check = stato_str.upper()\r\n        if \"RICHIESTO\" in stato_check or \"ATTESA\" in stato_check:\r\n            self.pannello_rimborso.show()\r\n        else:\r\n            self.pannello_rimborso.hide()\r\n\r\n    def accetta_rimborso(self):\r\n        risposta = QMessageBox.question(\r\n            self, \"Conferma Rimborso\",\r\n            f\"Sei sicuro di voler APPROVARE il rimborso per l'ordine #{self.ordine_corrente.id_ordine}?\",\r\n            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No\r\n        )\r\n        if risposta == QMessageBox.StandardButton.Yes:\r\n            self.gestore_ordini.gestisciRimborso(self.ordine_corrente.id_ordine, approvato=True)\r\n\r\n            # --- SINCRONIZZAZIONE CLIENTE ---\r\n            utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))\r\n            for u in utenti:\r\n                ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))\r\n                for o in ordini_cliente:\r\n                    if o.id_ordine == self.ordine_corrente.id_ordine:\r\n                        o.stato = StatoOrdine.RIMBORSO_COMPLETATO\r\n                        self.gestore_utenti._salva_dati()\r\n\r\n            QMessageBox.information(self, \"Successo\", \"Rimborso approvato e scorte ripristinate.\")\r\n            self.imposta_ordine(self.ordine_corrente)\r\n\r\n    def rifiuta_rimborso(self):\r\n        risposta = QMessageBox.question(\r\n            self, \"Rifiuta Rimborso\",\r\n            f\"Sei sicuro di voler RIFIUTARE il rimborso per l'ordine #{self.ordine_corrente.id_ordine}?\",\r\n            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No\r\n        )\r\n        if risposta == QMessageBox.StandardButton.Yes:\r\n            self.gestore_ordini.gestisciRimborso(self.ordine_corrente.id_ordine, approvato=False)\r\n\r\n            # --- SINCRONIZZAZIONE CLIENTE ---\r\n            utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))\r\n            for u in utenti:\r\n                ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))\r\n                for o in ordini_cliente:\r\n                    if o.id_ordine == self.ordine_corrente.id_ordine:\r\n                        o.stato = StatoOrdine.COMPLETATO\r\n                        self.gestore_utenti._salva_dati()\r\n\r\n            QMessageBox.information(self, \"Rimborso Rifiutato\", \"La richiesta di rimborso è stata respinta.\")\r\n            self.imposta_ordine(self.ordine_corrente)\r\n\r\n    def torna_indietro(self):\r\n        if self.main_window and hasattr(self.main_window, 'mostra_gestione_ordini'):\r\n            self.main_window.mostra_gestione_ordini()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/views/dettaglio_ordine_dipendente_view.py b/views/dettaglio_ordine_dipendente_view.py
+--- a/views/dettaglio_ordine_dipendente_view.py	(revision 3db32462488287e8afe8b834639061bc20059a32)
++++ b/views/dettaglio_ordine_dipendente_view.py	(date 1794305571894)
+@@ -92,12 +92,25 @@
+         self.main_layout.addWidget(self.pannello_rimborso)
+         self.pannello_rimborso.hide()  # Lo mostriamo solo se serve
+ 
+-        # -- BOTTONE INDIETRO --
++        # -- BOTTONIERA AZIONI INFERIORE --
++        self.bottom_layout = QHBoxLayout()
++
+         self.btn_indietro = QPushButton("Torna alla Lista Ordini")
+         self.btn_indietro.setObjectName("BtnIndietro")
+         self.btn_indietro.setCursor(Qt.CursorShape.PointingHandCursor)
+         self.btn_indietro.setFixedWidth(250)
+-        self.main_layout.addWidget(self.btn_indietro, alignment=Qt.AlignmentFlag.AlignLeft)
++
++        self.btn_completa = QPushButton("Completa Ordine")
++        self.btn_completa.setObjectName("BtnCompleta")
++        self.btn_completa.setCursor(Qt.CursorShape.PointingHandCursor)
++        self.btn_completa.setFixedWidth(250)
++
++        self.bottom_layout.addWidget(self.btn_indietro, alignment=Qt.AlignmentFlag.AlignLeft)
++        self.bottom_layout.addStretch()  # Spinge il pulsante "Completa Ordine" a destra
++        self.bottom_layout.addWidget(self.btn_completa, alignment=Qt.AlignmentFlag.AlignRight)
++
++        self.main_layout.addLayout(self.bottom_layout)
++        self.btn_completa.hide()  # Lo mostriamo in base allo stato
+ 
+     def applica_stili(self):
+         self.setStyleSheet("""
+@@ -126,8 +139,8 @@
+             QPushButton:hover { background-color: #2a528a; }
+             #BtnIndietro { background-color: #666; }
+             #BtnIndietro:hover { background-color: #888; }
+-            #BtnApprova { background-color: #28a745; }
+-            #BtnApprova:hover { background-color: #218838; }
++            #BtnApprova, #BtnCompleta { background-color: #28a745; }
++            #BtnApprova:hover, #BtnCompleta:hover { background-color: #218838; }
+             #BtnRifiuta { background-color: #dc3545; }
+             #BtnRifiuta:hover { background-color: #c82333; }
+         """)
+@@ -136,6 +149,7 @@
+         self.btn_indietro.clicked.connect(self.torna_indietro)
+         self.btn_approva.clicked.connect(self.accetta_rimborso)
+         self.btn_rifiuta.clicked.connect(self.rifiuta_rimborso)
++        self.btn_completa.clicked.connect(self.completa_ordine)
+ 
+     def imposta_ordine(self, ordine):
+         self.ordine_corrente = ordine
+@@ -203,6 +217,42 @@
+         else:
+             self.pannello_rimborso.hide()
+ 
++        # 4. Logica visualizzazione bottone Completa Ordine
++        # Lo mostriamo se l'ordine non è ancora completato, non è annullato e non è in fase di rimborso
++        if "COMPLETATO" not in stato_check and "RIMBORSO" not in stato_check and "ANNULLATO" not in stato_check:
++            self.btn_completa.show()
++        else:
++            self.btn_completa.hide()
++
++    def completa_ordine(self):
++        risposta = QMessageBox.question(
++            self, "Completa Ordine",
++            f"Sei sicuro di voler completare l'ordine #{self.ordine_corrente.id_ordine}?",
++            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
++        )
++        if risposta == QMessageBox.StandardButton.Yes:
++
++            # Aggiorna lo stato nel gestore ordini (se presente un metodo apposito, usalo,
++            # altrimenti aggiorniamo direttamente l'oggetto)
++            self.ordine_corrente.stato = StatoOrdine.COMPLETATO
++
++            if hasattr(self.gestore_ordini, 'salva_dati'):
++                self.gestore_ordini.salva_dati()
++
++            # --- SINCRONIZZAZIONE CLIENTE ---
++            utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
++            for u in utenti:
++                ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))
++                for o in ordini_cliente:
++                    if o.id_ordine == self.ordine_corrente.id_ordine:
++                        o.stato = StatoOrdine.COMPLETATO
++                        self.gestore_utenti._salva_dati()
++                        break
++
++            QMessageBox.information(self, "Successo", "Ordine completato con successo!")
++            self.imposta_ordine(
++                self.ordine_corrente)  # Ricarica i dati (che nasconderà il bottone e aggiornerà lo stato)
++
+     def accetta_rimborso(self):
+         risposta = QMessageBox.question(
+             self, "Conferma Rimborso",
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"ALL\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"a31efd4a-a690-4764-85aa-effcd39deb3d\" name=\"Changes\" comment=\"sistemato il necessario\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/data/piste.pickle\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/data/piste.pickle\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;teocaravelli&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/teocaravelli/PassoDellOrsoLaVendetta.git&quot;,\r\n    &quot;accountId&quot;: &quot;a103bb9e-aaee-4d34-81a5-c3ca5d626d6b&quot;\r\n  }\r\n}</component>\r\n  <component name=\"NextEditCompletionFeaturesState\">\r\n    <decayedCancelled>\r\n      <entry key=\"MS100\" value=\"1.0000550089788591\" />\r\n      <entry key=\"MS500\" value=\"1.165796842064825\" />\r\n      <entry key=\"S2\" value=\"2.7928985842261866\" />\r\n      <entry key=\"S5\" value=\"5.379557026066246\" />\r\n      <entry key=\"S10\" value=\"8.007292882991234\" />\r\n      <entry key=\"S30\" value=\"14.331357075493408\" />\r\n      <entry key=\"S60\" value=\"20.91220981313539\" />\r\n      <entry key=\"M2\" value=\"28.60657526691609\" />\r\n      <entry key=\"M5\" value=\"38.15088317568926\" />\r\n      <entry key=\"M10\" value=\"45.6584963150407\" />\r\n      <entry key=\"M15\" value=\"50.99089039679973\" />\r\n      <entry key=\"M30\" value=\"61.77750071415353\" />\r\n      <entry key=\"H1\" value=\"72.50969847699955\" />\r\n      <entry key=\"H2\" value=\"80.70544003128632\" />\r\n      <entry key=\"H4\" value=\"85.88482307940397\" />\r\n      <entry key=\"D1\" value=\"90.90743906589007\" />\r\n      <entry key=\"W1\" value=\"91.84200152537512\" />\r\n    </decayedCancelled>\r\n    <decayedSelected>\r\n      <entry key=\"MS100\" value=\"1.447924780795114E-28\" />\r\n      <entry key=\"MS500\" value=\"2.704887458189884E-6\" />\r\n      <entry key=\"S2\" value=\"0.04055561684376374\" />\r\n      <entry key=\"S5\" value=\"0.2818651232896739\" />\r\n      <entry key=\"S10\" value=\"0.5945506151420391\" />\r\n      <entry key=\"S30\" value=\"1.4454846234309053\" />\r\n      <entry key=\"S60\" value=\"2.457988023854578\" />\r\n      <entry key=\"M2\" value=\"3.6430920388403423\" />\r\n      <entry key=\"M5\" value=\"4.855491518997595\" />\r\n      <entry key=\"M10\" value=\"5.44826706727592\" />\r\n      <entry key=\"M15\" value=\"5.740130961908505\" />\r\n      <entry key=\"M30\" value=\"6.1856719334166534\" />\r\n      <entry key=\"H1\" value=\"6.524344518100347\" />\r\n      <entry key=\"H2\" value=\"6.741012605248375\" />\r\n      <entry key=\"H4\" value=\"6.864605503107784\" />\r\n      <entry key=\"D1\" value=\"6.976556974134323\" />\r\n      <entry key=\"W1\" value=\"6.99662871615842\" />\r\n    </decayedSelected>\r\n    <decayedShown>\r\n      <entry key=\"MS100\" value=\"0.946109328919285\" />\r\n      <entry key=\"MS500\" value=\"1.152744211525868\" />\r\n      <entry key=\"S2\" value=\"2.794785663679322\" />\r\n      <entry key=\"S5\" value=\"5.5239942987734505\" />\r\n      <entry key=\"S10\" value=\"8.409065811210901\" />\r\n      <entry key=\"S30\" value=\"15.56934054332506\" />\r\n      <entry key=\"S60\" value=\"23.181065525581\" />\r\n      <entry key=\"M2\" value=\"32.10484360754628\" />\r\n      <entry key=\"M5\" value=\"42.92609075212855\" />\r\n      <entry key=\"M10\" value=\"51.0588188445321\" />\r\n      <entry key=\"M15\" value=\"56.695595055328646\" />\r\n      <entry key=\"M30\" value=\"67.94228719526588\" />\r\n      <entry key=\"H1\" value=\"79.02220205845876\" />\r\n      <entry key=\"H2\" value=\"87.44004004613812\" />\r\n      <entry key=\"H4\" value=\"92.74607367859231\" />\r\n      <entry key=\"D1\" value=\"97.88341356057225\" />\r\n      <entry key=\"W1\" value=\"98.83854641958179\" />\r\n    </decayedShown>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 2,\r\n  &quot;fromUser&quot;: false\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"3LSjcsLw79nEVoZk0rWWT5LwX90\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,\r\n    &quot;Python.main.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.ordini_dipendente_view.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.popola_ordini.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.popola_prodotti.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,\r\n    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,\r\n    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/PycharmProjects/PassoDellOrsoLaVendetta&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;python.packages.toolwindow.project.migrated.to.right.top.v2&quot;: &quot;true&quot;,\r\n    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\User\\PycharmProjects\\PassoDellOrsoLaVendetta\" />\r\n      <recent name=\"C:\\Users\\User\\PycharmProjects\\PassoDellOrsoLaVendetta\\views\" />\r\n      <recent name=\"C:\\Users\\User\\PycharmProjects\\PassoDellOrsoLaVendetta\\models\" />\r\n      <recent name=\"C:\\Users\\User\\PycharmProjects\\PassoDellOrsoLaVendetta\\controllers\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-73a66231627c-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.10968.92\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"a31efd4a-a690-4764-85aa-effcd39deb3d\" name=\"Changes\" comment=\"\" />\r\n      <created>1793454445612</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1793454445612</updated>\r\n      <workItem from=\"1793454446659\" duration=\"1966000\" />\r\n      <workItem from=\"1793623977440\" duration=\"2000\" />\r\n      <workItem from=\"1793637957157\" duration=\"3565000\" />\r\n      <workItem from=\"1793641644709\" duration=\"41000\" />\r\n      <workItem from=\"1793718499755\" duration=\"154000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"sistemato il necessario\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1793641674854</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1793641674854</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"sistemato il necessario\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"sistemato il necessario\" />\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/PassoDellOrsoLaVendetta$ordini_dipendente_view.coverage\" NAME=\"ordini_dipendente_view Coverage Results\" MODIFIED=\"1793639702580\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$/views\" />\r\n    <SUITE FILE_PATH=\"coverage/PassoDellOrsoLaVendetta$popola_ordini.coverage\" NAME=\"popola_ordini Coverage Results\" MODIFIED=\"1793616839610\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/PassoDellOrsoLaVendetta$main.coverage\" NAME=\"main Coverage Results\" MODIFIED=\"1793718506488\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/PassoDellOrsoLaVendetta$popola_prodotti.coverage\" NAME=\"popola_prodotti Coverage Results\" MODIFIED=\"1793616802057\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 3db32462488287e8afe8b834639061bc20059a32)
++++ b/.idea/workspace.xml	(date 1794305623635)
+@@ -5,8 +5,7 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="sistemato il necessario">
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/data/piste.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/data/piste.pickle" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/views/dettaglio_ordine_dipendente_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/views/dettaglio_ordine_dipendente_view.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -29,12 +28,12 @@
+     &quot;assignee&quot;: &quot;teocaravelli&quot;
+   }
+ }</component>
+-  <component name="GithubPullRequestsUISettings">{
+-  &quot;selectedUrlAndAccountId&quot;: {
+-    &quot;url&quot;: &quot;https://github.com/teocaravelli/PassoDellOrsoLaVendetta.git&quot;,
+-    &quot;accountId&quot;: &quot;a103bb9e-aaee-4d34-81a5-c3ca5d626d6b&quot;
+-  }
+-}</component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/teocaravelli/PassoDellOrsoLaVendetta.git",
++    "accountId": "e22bb7fe-6ea9-4ae7-b66b-500d1a8ff0fd"
++  }
++}]]></component>
+   <component name="NextEditCompletionFeaturesState">
+     <decayedCancelled>
+       <entry key="MS100" value="1.0000550089788591" />
+@@ -106,32 +105,33 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.ordini_dipendente_view.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.popola_ordini.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.popola_prodotti.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/PycharmProjects/PassoDellOrsoLaVendetta&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;python.packages.toolwindow.project.migrated.to.right.top.v2&quot;: &quot;true&quot;,
+-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "ModuleVcsDetector.initialDetectionPerformed": "true",
++    "Python.main.executor": "Run",
++    "Python.ordini_dipendente_view.executor": "Run",
++    "Python.popola_ordini.executor": "Run",
++    "Python.popola_prodotti.executor": "Run",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "RunOnceActivity.git.unshallow": "true",
++    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
++    "codeWithMe.voiceChat.enabledByDefault": "false",
++    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
++    "git-widget-placeholder": "master",
++    "junie.onboarding.icon.badge.shown": "true",
++    "last_opened_file_path": "C:/Users/User/PycharmProjects/PassoDellOrsoLaVendetta",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.jshint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.jshint": "",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
++    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
++    "to.speed.mode.migration.done": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta" />
+@@ -140,10 +140,36 @@
+       <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\controllers" />
+     </key>
+   </component>
++  <component name="RunManager">
++    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
++      <module name="PassoDellOrsoLaVendetta" />
++      <option name="ENV_FILES" value="" />
++      <option name="INTERPRETER_OPTIONS" value="" />
++      <option name="PARENT_ENVS" value="true" />
++      <envs>
++        <env name="PYTHONUNBUFFERED" value="1" />
++      </envs>
++      <option name="SDK_HOME" value="" />
++      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
++      <option name="IS_MODULE_SDK" value="true" />
++      <option name="ADD_CONTENT_ROOTS" value="true" />
++      <option name="ADD_SOURCE_ROOTS" value="true" />
++      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
++      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
++      <option name="PARAMETERS" value="" />
++      <option name="SHOW_COMMAND_LINE" value="false" />
++      <option name="EMULATE_TERMINAL" value="false" />
++      <option name="MODULE_MODE" value="false" />
++      <option name="REDIRECT_INPUT" value="false" />
++      <option name="INPUT_FILE" value="" />
++      <method v="2" />
++    </configuration>
++  </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+-        <option value="bundled-python-sdk-73a66231627c-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.10968.92" />
++        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-PY-251.23774.444" />
++        <option value="bundled-python-sdk-890ed5b35930-d9c5bdb153f4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.23774.444" />
+       </set>
+     </attachedChunks>
+   </component>
+@@ -180,8 +206,8 @@
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+     <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$ordini_dipendente_view.coverage" NAME="ordini_dipendente_view Coverage Results" MODIFIED="1793639702580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/views" />
+-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_ordini.coverage" NAME="popola_ordini Coverage Results" MODIFIED="1793616839610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$main.coverage" NAME="main Coverage Results" MODIFIED="1793718506488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$main.coverage" NAME="main Coverage Results" MODIFIED="1794305571914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_prodotti.coverage" NAME="popola_prodotti Coverage Results" MODIFIED="1793616802057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_ordini.coverage" NAME="popola_ordini Coverage Results" MODIFIED="1793616839610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/PassoDellOrsoLaVendetta.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"PYTHON_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\">\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <excludeFolder url=\"file://$MODULE_DIR$/.venv\" />\r\n    </content>\r\n    <orderEntry type=\"jdk\" jdkName=\"~\\PycharmProjects\\PassoDellOrsoLaVendetta\\.venv\" jdkType=\"Python SDK\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n  <component name=\"PackageRequirementsSettings\" />\r\n  <component name=\"PyDocumentationSettings\" />\r\n  <component name=\"ReSTService\" />\r\n  <component name=\"TestRunnerService\" />\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/PassoDellOrsoLaVendetta.iml b/.idea/PassoDellOrsoLaVendetta.iml
+--- a/.idea/PassoDellOrsoLaVendetta.iml	(revision 3db32462488287e8afe8b834639061bc20059a32)
++++ b/.idea/PassoDellOrsoLaVendetta.iml	(date 1794305623629)
+@@ -4,11 +4,7 @@
+     <content url="file://$MODULE_DIR$">
+       <excludeFolder url="file://$MODULE_DIR$/.venv" />
+     </content>
+-    <orderEntry type="jdk" jdkName="~\PycharmProjects\PassoDellOrsoLaVendetta\.venv" jdkType="Python SDK" />
++    <orderEntry type="jdk" jdkName="Python 3.13 (PassoDellOrsoLaVendetta)" jdkType="Python SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+-  <component name="PackageRequirementsSettings" />
+-  <component name="PyDocumentationSettings" />
+-  <component name="ReSTService" />
+-  <component name="TestRunnerService" />
+ </module>
+\ No newline at end of file
