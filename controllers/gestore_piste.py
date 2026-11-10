@@ -45,15 +45,12 @@ class GestorePiste:
 
     def _carica_dati(self):
         if os.path.exists(self._file_path):
-            # Se il file esiste, proviamo a leggerlo
             try:
-                # Controlliamo anche che non sia un file completamente vuoto
                 if os.path.getsize(self._file_path) > 0:
                     with open(self._file_path, 'rb') as f:
                         self._piste = pickle.load(f)
                 else:
                     self._piste = []
             except (EOFError, pickle.UnpicklingError):
-                # Se il file è un testo non valido (errore \xef) o è rovinato, lo ignoriamo
                 print(f"Attenzione: il file {self._file_path} era illeggibile. Inizializzo le piste da zero.")
                 self._piste = []

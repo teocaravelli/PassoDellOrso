@@ -27,7 +27,6 @@ class NuovoProdottoView(QWidget):
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # -- CONTENITORE PRINCIPALE --
         self.form_box = QFrame()
         self.form_box.setObjectName("FormBox")
         self.box_layout = QVBoxLayout(self.form_box)
@@ -40,7 +39,6 @@ class NuovoProdottoView(QWidget):
         self.box_layout.addWidget(self.lbl_titolo)
         self.box_layout.addSpacing(10)
 
-        # -- CAMPI COMUNI (Visibili per tutti) --
         self.form_layout = QFormLayout()
         self.form_layout.setSpacing(15)
 
@@ -70,11 +68,9 @@ class NuovoProdottoView(QWidget):
 
         self.box_layout.addLayout(self.form_layout)
 
-        # -- CAMPI SPECIFICI DINAMICI (QStackedWidget) --
         self.stacked_specifiche = QStackedWidget()
         self.box_layout.addWidget(self.stacked_specifiche)
 
-        # Pagina 0: Attrezzatura
         self.page_attr = QWidget()
         lay_attr = QFormLayout(self.page_attr)
         self.combo_attr_tipo = QComboBox()
@@ -89,7 +85,6 @@ class NuovoProdottoView(QWidget):
         lay_attr.addRow("Taglia:", self.input_attr_taglia)
         self.stacked_specifiche.addWidget(self.page_attr)
 
-        # Pagina 1: Skipass
         self.page_skipass = QWidget()
         lay_ski = QFormLayout(self.page_skipass)
         self.combo_ski_formula = QComboBox()
@@ -103,7 +98,6 @@ class NuovoProdottoView(QWidget):
         lay_ski.addRow("Data Fine Val.:", self.date_ski_fine)
         self.stacked_specifiche.addWidget(self.page_skipass)
 
-        # Pagina 2: Lezione
         self.page_lez = QWidget()
         lay_lez = QFormLayout(self.page_lez)
         self.combo_lez_livello = QComboBox()
@@ -114,7 +108,6 @@ class NuovoProdottoView(QWidget):
         lay_lez.addRow("Data e Ora:", self.date_lez_ora)
         self.stacked_specifiche.addWidget(self.page_lez)
 
-        # Pagina 3: Assicurazione
         self.page_assicur = QWidget()
         lay_ass = QFormLayout(self.page_assicur)
         self.date_ass_inizio = QDateEdit(calendarPopup=True)
@@ -127,7 +120,6 @@ class NuovoProdottoView(QWidget):
 
         self.box_layout.addSpacing(10)
 
-        # -- BOTTONI --
         self.btn_layout = QHBoxLayout()
         self.btn_indietro = QPushButton("Annulla")
         self.btn_indietro.setObjectName("BtnSecondario")
@@ -167,14 +159,11 @@ class NuovoProdottoView(QWidget):
     def connetti_segnali(self):
         self.btn_salva.clicked.connect(self.esegui_creazione)
         self.btn_indietro.clicked.connect(self.torna_all_inventario)
-        # Cambio pagina dinamico in base alla selezione della combobox
         self.combo_tipo.currentIndexChanged.connect(self.cambia_campi_specifici)
 
     def cambia_campi_specifici(self, index):
-        """Cambia i form mostrati in base alla tipologia di prodotto scelta."""
         self.stacked_specifiche.setCurrentIndex(index)
 
-        # Le categorie Skipass e Assicurazione tipicamente non hanno "scorte" fisiche da scalare
         if self.combo_tipo.currentText() in ["Skipass", "Assicurazione"]:
             self.input_quantita.setEnabled(False)
             self.input_quantita.setValue(999)  # Illimitati
@@ -190,7 +179,6 @@ class NuovoProdottoView(QWidget):
             QMessageBox.warning(self, "Attenzione", "Il nome del prodotto è obbligatorio.")
             return
 
-        # 1. Raccogliamo i campi base in un dizionario
         dati_prodotto = {
             "nome": nome,
             "prezzo": self.input_prezzo.value(),
@@ -198,7 +186,6 @@ class NuovoProdottoView(QWidget):
             "is_disponibile": self.check_disponibile.isChecked()
         }
 
-        # 2. Aggiungiamo i campi specifici a seconda della tendina selezionata
         if tipo == "Attrezzatura":
             dati_prodotto["brand"] = self.input_attr_brand.text().strip()
             dati_prodotto["taglia"] = self.input_attr_taglia.text().strip()
@@ -218,7 +205,6 @@ class NuovoProdottoView(QWidget):
             dati_prodotto["data_inizio"] = self.date_ass_inizio.date().toPyDate()
             dati_prodotto["data_fine"] = self.date_ass_fine.date().toPyDate()
 
-        # 3. Deleghiamo la creazione reale al Controller
         try:
             self.gestore_prodotti.crea_e_salva_prodotto(tipo, dati_prodotto)
 

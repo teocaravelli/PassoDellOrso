@@ -6,7 +6,6 @@ from PyQt6.QtCore import Qt
 
 
 class CatalogoView(QWidget):
-    # 1. MODIFICA: Aggiunto gestore_prodotti nel costruttore
     def __init__(self, gestore_utenti, gestore_prodotti, main_window=None):
         super().__init__()
         self.gestore_utenti = gestore_utenti
@@ -52,7 +51,6 @@ class CatalogoView(QWidget):
 
         self.main_layout.addLayout(self.layout_header)
 
-        # AREA SCROLLABILE
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setStyleSheet("QScrollArea { border: none; background-color: white; }")
@@ -74,10 +72,8 @@ class CatalogoView(QWidget):
         self.btn_carrello.clicked.connect(self.vai_al_carrello)
 
     def aggiorna_dati(self):
-        # 2. MODIFICA: Delega la lettura dei prodotti al Controller
         self.prodotti = self.gestore_prodotti.get_tutti_prodotti()
 
-        # 3. MODIFICA: Legge l'utente e il suo carrello correttamente dalla memoria, senza aprire file
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
         num_carrello = 0
 
@@ -96,7 +92,6 @@ class CatalogoView(QWidget):
         max_colonne = 3
 
         for prodotto in self.prodotti:
-            # 4. MODIFICA: Utilizza le property ufficiali del model
             nome = prodotto.nome
             prezzo = prodotto.prezzo
             is_disp = prodotto.is_disponibile
@@ -118,7 +113,6 @@ class CatalogoView(QWidget):
             lbl_img.setFixedHeight(110)
             lbl_img.setStyleSheet("background-color: #add8e6; border: none; border-radius: 8px; font-size: 45px;")
 
-            # Logica Badge Disponibilità
             if is_disp and (qta is None or qta > 0):
                 testo_disp = f"Disponibile ({qta})" if qta is not None else "Disponibile"
                 colore_badge = "#5cb85c"

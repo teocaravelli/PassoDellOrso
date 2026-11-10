@@ -10,7 +10,6 @@ class LoginView(QWidget):
     def __init__(self, gestore_utenti, main_window=None):
         super().__init__()
         self.gestore_utenti = gestore_utenti
-        # Riferimento alla finestra principale (QStackedWidget) per poter cambiare pagina
         self.main_window = main_window
 
         self.setup_ui()

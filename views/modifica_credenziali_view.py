@@ -34,14 +34,12 @@ class ModificaCredenzialiView(QWidget):
 
         self.main_layout.addSpacing(20)
 
-        # Riquadro del Form
         self.form_frame = QFrame()
         self.form_frame.setObjectName("FormFrame")
         self.form_layout = QFormLayout(self.form_frame)
         self.form_layout.setSpacing(15)
         self.form_layout.setContentsMargins(30, 30, 30, 30)
 
-        # Campi di input
         self.input_email = QLineEdit()
         self.input_email.setPlaceholderText("Nuova Email (lascia vuoto per non modificare)")
 
@@ -53,7 +51,6 @@ class ModificaCredenzialiView(QWidget):
         self.input_conferma_password.setPlaceholderText("Conferma Nuova Password")
         self.input_conferma_password.setEchoMode(QLineEdit.EchoMode.Password)
 
-        # Aggiunta dei campi al FormLayout
         self.form_layout.addRow(QLabel("Nuova Email:"), self.input_email)
         self.form_layout.addRow(QLabel("Nuova Password:"), self.input_password)
         self.form_layout.addRow(QLabel("Conferma Password:"), self.input_conferma_password)
@@ -62,7 +59,6 @@ class ModificaCredenzialiView(QWidget):
 
         self.main_layout.addSpacing(20)
 
-        # Pulsanti
         self.layout_pulsanti = QHBoxLayout()
         self.layout_pulsanti.setSpacing(20)
 
@@ -102,7 +98,6 @@ class ModificaCredenzialiView(QWidget):
         self.input_password.clear()
         self.input_conferma_password.clear()
 
-        # Precompila l'email attuale per comodità se l'utente è loggato
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
         if utente:
             email_attuale = getattr(utente, 'email', getattr(utente, '_email', ''))
@@ -121,7 +116,6 @@ class ModificaCredenzialiView(QWidget):
 
         modifiche_effettuate = False
 
-        # 1. Controllo ed aggiornamento Email
         if nuova_email:
             email_attuale = getattr(utente, 'email', getattr(utente, '_email', ''))
             if nuova_email != email_attuale:
@@ -131,7 +125,6 @@ class ModificaCredenzialiView(QWidget):
                     utente._email = nuova_email
                 modifiche_effettuate = True
 
-        # 2. Controllo ed aggiornamento Password
         if nuova_password or conferma_password:
             if nuova_password != conferma_password:
                 QMessageBox.warning(self, "Errore", "Le due password non corrispondono. Riprova.")
@@ -146,7 +139,6 @@ class ModificaCredenzialiView(QWidget):
                 utente._password = nuova_password
             modifiche_effettuate = True
 
-        # 3. Salvataggio
         if modifiche_effettuate:
             try:
                 if hasattr(self.gestore_utenti, '_salva_dati'):

@@ -21,7 +21,6 @@ class GestionePisteView(QWidget):
         self.main_layout.setContentsMargins(30, 30, 30, 30)
         self.main_layout.setSpacing(20)
 
-        # -- INTESTAZIONE --
         self.header_layout = QHBoxLayout()
         self.lbl_titolo = QLabel("GESTIONE STATO PISTE")
         self.lbl_titolo.setObjectName("TitoloAzzurro")
@@ -29,13 +28,11 @@ class GestionePisteView(QWidget):
         self.header_layout.addWidget(self.lbl_titolo)
         self.main_layout.addLayout(self.header_layout)
 
-        # -- TABELLA PISTE --
         self.tabella_piste = QTableWidget()
         self.tabella_piste.setColumnCount(4)
         self.tabella_piste.setHorizontalHeaderLabels(["ID", "Nome Pista", "Difficoltà", "Modifica Stato"])
 
         header = self.tabella_piste.horizontalHeader()
-        # Le prime 3 colonne si adattano al contenuto, l'ultima prende tutto lo spazio rimanente
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
@@ -47,7 +44,6 @@ class GestionePisteView(QWidget):
 
         self.main_layout.addWidget(self.tabella_piste)
 
-        # -- BOTTONI INFERIORI --
         self.footer_layout = QHBoxLayout()
         self.btn_indietro = QPushButton("Torna alla Dashboard")
         self.btn_indietro.setObjectName("BtnIndietro")
@@ -166,8 +162,6 @@ class GestionePisteView(QWidget):
             self.tabella_piste.setCellWidget(riga, 3, pannello_azione)
 
     def salva_nuovo_stato(self, id_pista, combo_box):
-        """Metodo per salvare il nuovo stato richiamando il GestorePiste."""
-        # Estraiamo l'oggetto Enum salvato come "userData" dentro la combobox
         nuovo_stato_enum = combo_box.currentData()
 
         esito = self.gestore_piste.modificaStatoPista(id_pista, nuovo_stato_enum)

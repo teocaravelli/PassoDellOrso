@@ -40,7 +40,6 @@ class OrdiniDipendenteView(QWidget):
 
         self.main_layout.addWidget(self.tabella_ordini)
 
-        # -- BOTTONI INFERIORI --
         self.footer_layout = QHBoxLayout()
         self.btn_indietro = QPushButton("Torna alla Dashboard")
         self.btn_indietro.setObjectName("BtnIndietro")
@@ -109,14 +108,9 @@ class OrdiniDipendenteView(QWidget):
     def connetti_segnali(self):
         self.btn_indietro.clicked.connect(self.torna_alla_dashboard)
 
-    # ==========================================
-    # LOGICA DI AGGIORNAMENTO
-    # ==========================================
-
     def aggiorna_vista(self):
         self.tabella_ordini.setRowCount(0)
 
-        # 1. Forza la ricarica dei file per leggere le ultimissime azioni dei clienti
         if hasattr(self.gestore_utenti, '_carica_dati'):
             self.gestore_utenti._carica_dati()
         if hasattr(self.gestore_ordini, '_carica_dati'):
@@ -128,25 +122,21 @@ class OrdiniDipendenteView(QWidget):
         self.tabella_ordini.setAlternatingRowColors(True)
 
         for riga, ordine in enumerate(ordini):
-            # 0. ID
             id_item = QTableWidgetItem(f"#{ordine.id_ordine}")
             id_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 0, id_item)
 
-            # 1. CLIENTE & AUTO-SYNC DELLO STATO
             dati_cliente = "Cliente Sconosciuto"
-            stato_aggiornato = ordine.stato  # Di base usa lo stato lato dipendente
+            stato_aggiornato = ordine.stato
 
             for utente in self.gestore_utenti._utenti:
                 if hasattr(utente, 'ordini'):
                     for o in utente.ordini:
                         if o.id_ordine == ordine.id_ordine:
                             dati_cliente = f"{utente.nome} {utente.cognome}\n({utente.email})"
-                            # Catturiamo lo stato dal profilo del cliente (che è sempre il più recente)
                             stato_aggiornato = o.stato
                             break
 
-            # AUTO-RIPARAZIONE: Se il cliente ha cambiato stato e il database ordini non lo sa, lo correggiamo e salviamo!
             if ordine.stato != stato_aggiornato:
                 ordine.stato = stato_aggiornato
                 self.gestore_ordini._salva_dati()
@@ -155,7 +145,6 @@ class OrdiniDipendenteView(QWidget):
             cliente_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 1, cliente_item)
 
-            # 2. Data
             data_str = "N/A"
             if hasattr(ordine, '_data'):
                 data_str = ordine._data.strftime('%d/%m/%Y\n%H:%M')
@@ -163,28 +152,21 @@ class OrdiniDipendenteView(QWidget):
             data_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 2, data_item)
 
-            # 3. Totale
             totale_item = QTableWidgetItem(f"€ {ordine.prezzo_totale:.2f}")
             totale_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 3, totale_item)
 
-            # 4. Stato (Ora usa lo stato_aggiornato garantito)
             stato_str = stato_aggiornato.name.replace("_", " ") if hasattr(stato_aggiornato, 'name') else str(
                 stato_aggiornato)
             stato_item = QTableWidgetItem(stato_str)
             stato_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_ordini.setItem(riga, 4, stato_item)
 
-            # 5. Pulsante Azione
             btn_azione = QPushButton("Dettagli / Gestisci")
             btn_azione.setCursor(Qt.CursorShape.PointingHandCursor)
             btn_azione.setProperty("class", "GestisciBtn")
             btn_azione.clicked.connect(lambda checked, id_o=ordine.id_ordine: self.apri_dettaglio_ordine(id_o))
             self.tabella_ordini.setCellWidget(riga, 5, btn_azione)
-
-    # ==========================================
-    # LOGICA DI NAVIGAZIONE E AZIONI
-    # ==========================================
 
     def torna_alla_dashboard(self):
         if self.main_window:

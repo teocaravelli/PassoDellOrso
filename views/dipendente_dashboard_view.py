@@ -16,12 +16,10 @@ class DipendenteDashboardView(QWidget):
         self.applica_stili()
 
     def setup_ui(self):
-        # Layout principale
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.main_layout.setSpacing(0)
 
-        # 1. TOP BAR (Saluto utente)
         self.top_bar = QFrame()
         self.top_bar.setObjectName("TopBar")
         self.top_layout = QHBoxLayout(self.top_bar)
@@ -32,7 +30,6 @@ class DipendenteDashboardView(QWidget):
 
         self.main_layout.addWidget(self.top_bar)
 
-        # 2. CORPO PRINCIPALE (Split in due colonne)
         self.body_layout = QHBoxLayout()
         self.body_layout.setContentsMargins(0, 0, 0, 0)
         self.body_layout.setSpacing(20)
@@ -46,7 +43,6 @@ class DipendenteDashboardView(QWidget):
         self.main_layout.addLayout(self.body_layout)
 
     def crea_menu_laterale(self):
-        """Crea la colonna di sinistra con il menù di navigazione."""
         self.sidebar = QFrame()
         self.sidebar.setObjectName("Sidebar")
         self.sidebar.setFixedWidth(250)
@@ -56,28 +52,24 @@ class DipendenteDashboardView(QWidget):
         self.sidebar_layout.setSpacing(15)
         self.sidebar_layout.setContentsMargins(20, 20, 20, 20)
 
-        # Logo / Titolo Sidebar
         self.logo_label = QLabel("PASSO DELL'ORSO\nSKI RESORT")
         self.logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.logo_label.setObjectName("LogoText")
         self.sidebar_layout.addWidget(self.logo_label)
         self.sidebar_layout.addSpacing(10)
 
-        # Intestazione Menù
         self.lbl_menu = QLabel("MENÙ DIPENDENTE")
         self.lbl_menu.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_menu.setObjectName("HeaderAzzurro")
         self.sidebar_layout.addWidget(self.lbl_menu)
         self.sidebar_layout.addSpacing(10)
 
-        # Bottoni di navigazione (Aggiornati secondo le tue direttive)
         self.btn_ordini = QPushButton("Gestione Ordini")
         self.btn_piste = QPushButton("Gestione Piste")
         self.btn_inventario = QPushButton("Inventario")
         self.btn_nuovo_dip = QPushButton("Nuovo Dipendente")
         self.btn_logout = QPushButton("Logout")
 
-        # Assegnazione classi per il CSS
         bottoni = [self.btn_ordini, self.btn_piste, self.btn_inventario, self.btn_nuovo_dip, self.btn_logout]
         for btn in bottoni:
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -86,14 +78,12 @@ class DipendenteDashboardView(QWidget):
         self.sidebar_layout.addStretch()  # Spinge il layout verso l'alto
 
     def crea_area_widget(self):
-        """Crea la colonna di destra con i widget riepilogativi della Dashboard."""
         self.content_area = QFrame()
         self.content_layout = QVBoxLayout(self.content_area)
         self.content_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.content_layout.setContentsMargins(20, 20, 40, 20)
         self.content_layout.setSpacing(30)
 
-        # -- WIDGET 1: ULTIMI ORDINI --
         self.widget_ordini = QFrame()
         self.w_ordini_layout = QVBoxLayout(self.widget_ordini)
 
@@ -101,7 +91,6 @@ class DipendenteDashboardView(QWidget):
         lbl_titolo_ordini.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lbl_titolo_ordini.setObjectName("HeaderAzzurro")
 
-        # Modifica: Salviamo la label come 'self.testo_ordini_label' per poterla aggiornare
         self.testo_ordini_label = QLabel("Caricamento ordini...")
         self.testo_ordini_label.setStyleSheet("font-size: 14px; color: #333;")
 
@@ -113,7 +102,6 @@ class DipendenteDashboardView(QWidget):
         self.w_ordini_layout.addWidget(self.testo_ordini_label)
         self.w_ordini_layout.addWidget(self.btn_vedi_ordini, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # -- WIDGET 2: GESTIONE RAPIDA PISTE --
         self.widget_piste = QFrame()
         self.w_piste_layout = QVBoxLayout(self.widget_piste)
 
@@ -121,7 +109,6 @@ class DipendenteDashboardView(QWidget):
         lbl_titolo_piste.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lbl_titolo_piste.setObjectName("HeaderAzzurro")
 
-        # Modifica: Salviamo la label come 'self.testo_piste_label' per poterla aggiornare
         self.testo_piste_label = QLabel("Caricamento piste...")
         self.testo_piste_label.setStyleSheet("font-size: 14px; color: #333;")
 
@@ -186,7 +173,6 @@ class DipendenteDashboardView(QWidget):
     def connetti_segnali(self):
         self.btn_logout.clicked.connect(self.esegui_logout)
 
-        # Connessioni verso schermate future
         self.btn_nuovo_dip.clicked.connect(self.vai_a_nuovo_dipendente)
         self.btn_ordini.clicked.connect(self.vai_a_ordini)
         self.btn_vedi_ordini.clicked.connect(self.vai_a_ordini)
@@ -195,38 +181,28 @@ class DipendenteDashboardView(QWidget):
         self.btn_inventario.clicked.connect(self.vai_a_inventario)
 
     def aggiorna_vista(self):
-        """Metodo da chiamare quando si accede alla dashboard per aggiornare il nome e i dati."""
-
-        # 1. Aggiorna il nome del dipendente
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
         if utente:
             self.lbl_saluto.setText(f"Ciao, {utente.nome} (Dipendente #{getattr(utente, 'id_dipendente', 'N/A')})")
 
-        # 2. Ricarichiamo i file per essere sicuri di avere i dati più recenti
         if hasattr(self.gestore_utenti, '_carica_dati'):
             self.gestore_utenti._carica_dati()
         if hasattr(self.gestore_ordini, '_carica_dati'):
             self.gestore_ordini._carica_dati()
 
-        # ==========================================
-        # AGGIORNAMENTO TESTO: ULTIMI ORDINI
-        # ==========================================
         ordini_recenti = getattr(self.gestore_ordini, '_ordini', [])
         testo_ordini_formattato = ""
 
         if not ordini_recenti:
             testo_ordini_formattato = "Nessun ordine presente nel sistema."
         else:
-            # Prende solo gli ultimi 2 ordini, e li mostra al contrario (dal più recente al più vecchio)
             for ordine in reversed(ordini_recenti[-2:]):
                 id_ordine = getattr(ordine, 'id_ordine', 'N/A')
                 totale = getattr(ordine, 'prezzo_totale', 0.0)
 
-                # Gestione sicura dello stato
                 stato_enum = getattr(ordine, 'stato', None)
                 stato_str = stato_enum.name.replace("_", " ") if hasattr(stato_enum, 'name') else str(stato_enum)
 
-                # Cerca il nome del cliente
                 nome_cliente = "Sconosciuto"
                 utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
                 for u in utenti:
@@ -239,12 +215,8 @@ class DipendenteDashboardView(QWidget):
 
         self.testo_ordini_label.setText(testo_ordini_formattato.strip())
 
-        # ==========================================
-        # AGGIORNAMENTO TESTO: PISTE
-        # ==========================================
         testo_piste_formattato = ""
 
-        # Recupera la lista delle piste dal Controller Piste
         lista_piste = []
         if hasattr(self.gestore_piste, 'get_tutte_piste') and callable(self.gestore_piste.get_tutte_piste):
             lista_piste = self.gestore_piste.get_tutte_piste()
@@ -254,15 +226,12 @@ class DipendenteDashboardView(QWidget):
         if not lista_piste:
             testo_piste_formattato = "Nessuna pista configurata nel sistema."
         else:
-            # Mostra le prime 2 piste presenti nel sistema
             for pista in lista_piste[:2]:
                 nome_pista = getattr(pista, 'nome', getattr(pista, '_nome', 'Pista Sconosciuta'))
 
-                # CORREZIONE: Cerca prima 'stato_apertura', poi '_stato_apertura', poi 'stato'
                 stato_enum = getattr(pista, 'stato_apertura',
                                      getattr(pista, '_stato_apertura', getattr(pista, 'stato', None)))
 
-                # Estrae il testo in modo sicuro dall'Enum
                 if hasattr(stato_enum, 'name'):
                     stato_str = stato_enum.name.replace("_", " ")
                 elif hasattr(stato_enum, 'value'):

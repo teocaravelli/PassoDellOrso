@@ -177,8 +177,6 @@ class CarrelloView(QWidget):
         if not utente or not getattr(utente, 'prodotti_carrello', []):
             return
 
-        # 1. CONTROLLO METODO DI PAGAMENTO
-        # Sostituisci 'metodi_pagamento' con il nome reale della lista nel tuo file Cliente se differisce
         metodi_salvati = getattr(utente, 'metodi_pagamento', getattr(utente, '_metodi_pagamento', []))
 
         if not metodi_salvati:
@@ -197,7 +195,6 @@ class CarrelloView(QWidget):
             return
 
         try:
-            # 2. Utilizza il primo metodo di pagamento disponibile del cliente (invece di una stringa fittizia)
             metodo_scelto = metodi_salvati[0]
 
             self.gestore_ordini.richiestaOrdine(utente, utente.prodotti_carrello, metodo_scelto)

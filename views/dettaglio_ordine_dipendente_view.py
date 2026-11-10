@@ -25,7 +25,6 @@ class DettaglioOrdineDipendenteView(QWidget):
         self.main_layout.setContentsMargins(30, 30, 30, 30)
         self.main_layout.setSpacing(20)
 
-        # -- INTESTAZIONE --
         self.header_layout = QHBoxLayout()
         self.lbl_titolo = QLabel("DETTAGLIO ORDINE")
         self.lbl_titolo.setObjectName("TitoloAzzurro")
@@ -33,7 +32,6 @@ class DettaglioOrdineDipendenteView(QWidget):
         self.header_layout.addWidget(self.lbl_titolo)
         self.main_layout.addLayout(self.header_layout)
 
-        # -- PANNELLO INFORMAZIONI GENERALI --
         self.info_frame = QFrame()
         self.info_frame.setObjectName("InfoFrame")
         self.info_layout = QVBoxLayout(self.info_frame)
@@ -50,7 +48,6 @@ class DettaglioOrdineDipendenteView(QWidget):
 
         self.main_layout.addWidget(self.info_frame)
 
-        # -- TABELLA PRODOTTI --
         self.lbl_prodotti = QLabel("Prodotti Acquistati:")
         self.lbl_prodotti.setStyleSheet("font-weight: bold; font-size: 16px; color: #1a365d;")
         self.main_layout.addWidget(self.lbl_prodotti)
@@ -69,7 +66,6 @@ class DettaglioOrdineDipendenteView(QWidget):
         self.tabella_prodotti.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.main_layout.addWidget(self.tabella_prodotti)
 
-        # -- PANNELLO AZIONI RIMBORSO (Nascosto di default) --
         self.pannello_rimborso = QFrame()
         self.pannello_rimborso.setObjectName("PannelloRimborso")
         self.layout_rimborso = QHBoxLayout(self.pannello_rimborso)
@@ -90,9 +86,8 @@ class DettaglioOrdineDipendenteView(QWidget):
         self.layout_rimborso.addWidget(self.btn_approva)
 
         self.main_layout.addWidget(self.pannello_rimborso)
-        self.pannello_rimborso.hide()  # Lo mostriamo solo se serve
+        self.pannello_rimborso.hide()
 
-        # -- BOTTONIERA AZIONI INFERIORE --
         self.bottom_layout = QHBoxLayout()
 
         self.btn_indietro = QPushButton("Torna alla Lista Ordini")
@@ -106,11 +101,11 @@ class DettaglioOrdineDipendenteView(QWidget):
         self.btn_completa.setFixedWidth(250)
 
         self.bottom_layout.addWidget(self.btn_indietro, alignment=Qt.AlignmentFlag.AlignLeft)
-        self.bottom_layout.addStretch()  # Spinge il pulsante "Completa Ordine" a destra
+        self.bottom_layout.addStretch()
         self.bottom_layout.addWidget(self.btn_completa, alignment=Qt.AlignmentFlag.AlignRight)
 
         self.main_layout.addLayout(self.bottom_layout)
-        self.btn_completa.hide()  # Lo mostriamo in base allo stato
+        self.btn_completa.hide()
 
     def applica_stili(self):
         self.setStyleSheet("""
@@ -154,7 +149,6 @@ class DettaglioOrdineDipendenteView(QWidget):
     def imposta_ordine(self, ordine):
         self.ordine_corrente = ordine
 
-        # 1. Intestazione e Dati Generali
         self.lbl_titolo.setText(f"DETTAGLIO ORDINE #{ordine.id_ordine}")
 
         data_str = getattr(ordine, '_data', None)
@@ -164,7 +158,6 @@ class DettaglioOrdineDipendenteView(QWidget):
 
         self.lbl_totale.setText(f"<b>Totale Pagato:</b> € {ordine.prezzo_totale:.2f}")
 
-        # Ricerca del cliente proprietario dell'ordine
         nome_cliente = "Cliente Sconosciuto"
         utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
         for u in utenti:
@@ -174,7 +167,6 @@ class DettaglioOrdineDipendenteView(QWidget):
                 break
         self.lbl_cliente.setText(f"<b>Cliente:</b> {nome_cliente}")
 
-        # Gestione Stato e Colori
         stato_enum = ordine.stato
         stato_str = stato_enum.name.replace("_", " ") if hasattr(stato_enum, 'name') else str(stato_enum)
 
@@ -186,7 +178,6 @@ class DettaglioOrdineDipendenteView(QWidget):
 
         self.lbl_stato.setText(f"<b>Stato Attuale:</b> <span style='color: {colore_stato};'>{stato_str}</span>")
 
-        # 2. Popolamento Tabella Prodotti
         prodotti = ordine.prodotti
         self.tabella_prodotti.setRowCount(len(prodotti))
         self.tabella_prodotti.setAlternatingRowColors(True)
@@ -210,15 +201,12 @@ class DettaglioOrdineDipendenteView(QWidget):
             sub_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella_prodotti.setItem(riga, 3, sub_item)
 
-        # 3. Logica visualizzazione azioni rimborso
         stato_check = stato_str.upper()
         if "RICHIESTO" in stato_check or "ATTESA" in stato_check:
             self.pannello_rimborso.show()
         else:
             self.pannello_rimborso.hide()
 
-        # 4. Logica visualizzazione bottone Completa Ordine
-        # Lo mostriamo se l'ordine non è ancora completato, non è annullato e non è in fase di rimborso
         if "COMPLETATO" not in stato_check and "RIMBORSO" not in stato_check and "ANNULLATO" not in stato_check:
             self.btn_completa.show()
         else:
@@ -232,14 +220,12 @@ class DettaglioOrdineDipendenteView(QWidget):
         )
         if risposta == QMessageBox.StandardButton.Yes:
 
-            # 1. Aggiorna lo stato nel gestore ordini e salva
             self.ordine_corrente.stato = StatoOrdine.COMPLETATO
             if hasattr(self.gestore_ordini, 'salva_dati'):
                 self.gestore_ordini.salva_dati()
             elif hasattr(self.gestore_ordini, '_salva_dati'):
                 self.gestore_ordini._salva_dati()
 
-            # 2. Sincronizza lo stato dell'ordine anche per il cliente e salva gli utenti
             utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
             for u in utenti:
                 ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))
@@ -253,7 +239,6 @@ class DettaglioOrdineDipendenteView(QWidget):
                         break
 
             QMessageBox.information(self, "Successo", "Ordine completato con successo!")
-            # Ricarica l'interfaccia per mostrare il nuovo stato e nascondere il pulsante
             self.imposta_ordine(self.ordine_corrente)
 
     def accetta_rimborso(self):
@@ -265,7 +250,6 @@ class DettaglioOrdineDipendenteView(QWidget):
         if risposta == QMessageBox.StandardButton.Yes:
             self.gestore_ordini.gestisciRimborso(self.ordine_corrente.id_ordine, approvato=True)
 
-            # Sincronizzazione cliente
             utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
             for u in utenti:
                 ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))
@@ -289,7 +273,6 @@ class DettaglioOrdineDipendenteView(QWidget):
         if risposta == QMessageBox.StandardButton.Yes:
             self.gestore_ordini.gestisciRimborso(self.ordine_corrente.id_ordine, approvato=False)
 
-            # Sincronizzazione cliente
             utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
             for u in utenti:
                 ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))

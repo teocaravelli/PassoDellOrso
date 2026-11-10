@@ -6,7 +6,6 @@ from PyQt6.QtCore import Qt
 
 
 class ProdottoView(QWidget):
-    # 1. MODIFICA: Aggiunto gestore_prodotti al costruttore
     def __init__(self, gestore_utenti, gestore_prodotti, main_window=None):
         super().__init__()
         self.gestore_utenti = gestore_utenti
@@ -187,7 +186,6 @@ class ProdottoView(QWidget):
         d_inizio = self._leggi_valore(prodotto, 'getDataInizio', ['data_inizio', '_data_inizio'], None)
         d_fine = self._leggi_valore(prodotto, 'getDataFine', ['data_fine', '_data_fine'], None)
         if d_inizio and d_fine:
-            # 2. MODIFICA: Corretto l'errore di formattazione stringa che mandava in crash la View
             info_html += f"• <b>Validità:</b> {d_inizio} - {d_fine}"
 
         self.lbl_info_extra.setText(info_html)
@@ -226,7 +224,6 @@ class ProdottoView(QWidget):
                 self.btn_aggiungi.setEnabled(False)
                 self.btn_aggiungi.setText("Non Disponibile")
 
-    # 3. MODIFICA: Logica MVC perfetta. Delega tutto al controller e salva su disco!
     def aggiungi_al_carrello(self):
         utente = getattr(self.gestore_utenti, 'utente_corrente', None)
         if not utente:
@@ -236,10 +233,8 @@ class ProdottoView(QWidget):
         qta_selezionata = self.spin_qta.value()
 
         try:
-            # Chiama il GestoreProdotti che fa tutti i controlli (limiti, scorte, ecc.) e aggiunge l'item
             self.gestore_prodotti.aggiungiProdotto(utente, self.prodotto_corrente, qta_selezionata)
 
-            # Salva l'utente per mantenere il carrello in memoria
             self.gestore_utenti._salva_dati()
 
             QMessageBox.information(self, "Aggiunto",
@@ -247,7 +242,6 @@ class ProdottoView(QWidget):
             self.torna_al_catalogo()
 
         except ValueError as e:
-            # Cattura in automatico eventuali avvisi del controller (es. quantità massima superata)
             QMessageBox.warning(self, "Attenzione", str(e))
 
     def torna_al_catalogo(self):

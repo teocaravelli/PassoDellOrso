@@ -5,9 +5,6 @@ from datetime import datetime, date, timedelta
 
 from models.enums import Difficolta, StatoApertura, FormulaTemporale, Livello, StatoOrdine, TipologiaAttrezzatura
 
-# ==============================================================================
-# IMPORT DELLE TUE VERE CLASSI
-# ==============================================================================
 from models.pista import Pista
 from models.cliente import Cliente
 from models.dipendente import Dipendente
@@ -20,9 +17,6 @@ from models.attrezzatura import Attrezzatura
 from models.skipass import SkiPass
 from models.lezione import Lezione
 
-# ==============================================================================
-# NOMI DEI FILE E CARTELLA
-# ==============================================================================
 CARTELLA = "data"
 os.makedirs(CARTELLA, exist_ok=True)
 
@@ -104,9 +98,6 @@ def genera_prodotti():
     data_inizio_stagione = date(2026, 12, 1)
     data_fine_stagione = date(2027, 4, 30)
 
-    # ==========================================
-    # 1. SKIPASS E ASSICURAZIONI STAGIONALI
-    # ==========================================
     prodotti.append(SkiPass(
         id_prodotto=id_counter, nome="Skipass STAGIONALE 26/27", descrizione="Accesso illimitato stagione",
         prezzo=650.00, immagine="default.png", is_disponibile=True,
@@ -121,9 +112,6 @@ def genera_prodotti():
     ))
     id_counter += 1
 
-    # ==========================================
-    # 2. SKIPASS E ASSICURAZIONI MENSILI
-    # ==========================================
     data_fine_mese = date(2026, 12, 31)
 
     prodotti.append(SkiPass(
@@ -140,9 +128,6 @@ def genera_prodotti():
     ))
     id_counter += 1
 
-    # ==========================================
-    # 3. SKIPASS E ASSICURAZIONI SETTIMANALI
-    # ==========================================
     data_fine_settimana = data_inizio_stagione + timedelta(days=6)
     date_str = f"Dal {data_inizio_stagione.strftime('%d/%m/%y')} al {data_fine_settimana.strftime('%d/%m/%y')}"
 
@@ -160,9 +145,6 @@ def genera_prodotti():
     ))
     id_counter += 1
 
-    # ==========================================
-    # 4. CICLO DI 31 GIORNI (Giornalieri, Lezioni e Attrezzatura specifica per data)
-    # ==========================================
     for giorno in range(31):
         data_corrente = data_inizio_stagione + timedelta(days=giorno)
         data_str = data_corrente.strftime('%d/%m/%Y')
@@ -170,7 +152,6 @@ def genera_prodotti():
         dt_lezione_gruppo = datetime(data_corrente.year, data_corrente.month, data_corrente.day, 10, 0)
         dt_lezione_privata = datetime(data_corrente.year, data_corrente.month, data_corrente.day, 14, 0)
 
-        # Skipass e Assicurazione
         prodotti.append(SkiPass(
             id_prodotto=id_counter, nome=f"Skipass GIORNALIERO - {data_str}", descrizione="Accesso 1 giorno",
             prezzo=45.00, immagine="default.png", is_disponibile=True,
@@ -185,7 +166,6 @@ def genera_prodotti():
         ))
         id_counter += 1
 
-        # Lezioni
         livello_scelto = random.choice([Livello.PRINCIPIANTE, Livello.INTERMEDIO, Livello.AVANZATO])
 
         prodotti.append(Lezione(
@@ -204,7 +184,6 @@ def genera_prodotti():
         ))
         id_counter += 1
 
-        # Attrezzatura (Tutte le combinazioni per questo giorno specifico)
         for tipologia in TipologiaAttrezzatura:
             for livello in Livello:
                 prezzo_base = 25.0
@@ -289,9 +268,6 @@ def salva_su_pickle(dati, nome_file):
     print(f"  [+] Salvato con successo: {nome_file}")
 
 
-# ==============================================================================
-# ESECUZIONE PRINCIPALE
-# ==============================================================================
 if __name__ == "__main__":
     print("=== INIZIO RESET E POPOLAMENTO DATABASE ===")
 

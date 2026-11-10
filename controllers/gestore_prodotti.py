@@ -153,17 +153,14 @@ class GestoreProdotti:
     def _carica_dati(self):
         if os.path.exists(self._file_path):
             try:
-                # Controlla che il file non sia completamente vuoto
                 if os.path.getsize(self._file_path) > 0:
                     with open(self._file_path, 'rb') as f:
                         self._prodotti = pickle.load(f)
                 else:
                     self._prodotti = []
             except (EOFError, pickle.UnpicklingError):
-                # Se il file è un testo non valido (\xef) o è rovinato, lo ignora
                 print(f"Attenzione: il file {self._file_path} era illeggibile. Inizializzo i prodotti da zero.")
                 self._prodotti = []
 
     def get_tutti_prodotti(self) -> list:
-        """Restituisce la lista di tutti i prodotti a catalogo."""
         return self._prodotti

@@ -18,17 +18,11 @@ class ProfiloView(QWidget):
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.main_layout.setSpacing(20)
 
-        # ==========================================
-        # TITOLO
-        # ==========================================
         self.lbl_titolo = QLabel("IL MIO PROFILO")
         self.lbl_titolo.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_titolo.setObjectName("Titolo")
         self.main_layout.addWidget(self.lbl_titolo)
 
-        # ==========================================
-        # RIQUADRO CENTRALE (Dati a sx, Pagamenti a dx)
-        # ==========================================
         self.frame_info = QFrame()
         self.frame_info.setObjectName("FrameInfo")
 
@@ -36,7 +30,6 @@ class ProfiloView(QWidget):
         self.layout_info.setContentsMargins(40, 40, 40, 40)
         self.layout_info.setSpacing(50)
 
-        # --- SINISTRA: Dati Utente ---
         self.layout_dati = QVBoxLayout()
         self.layout_dati.setSpacing(15)
 
@@ -58,12 +51,10 @@ class ProfiloView(QWidget):
         self.layout_dati.addWidget(self.lbl_email)
         self.layout_dati.addWidget(self.lbl_telefono)
 
-        # Spinge tutto verso l'alto senza far collassare il layout
         self.layout_dati.addStretch()
 
         self.layout_info.addLayout(self.layout_dati, stretch=1)
 
-        # --- DESTRA: Metodi di Pagamento ---
         self.layout_pagamenti = QVBoxLayout()
         self.layout_pagamenti.setSpacing(15)
 
@@ -71,21 +62,16 @@ class ProfiloView(QWidget):
         self.lbl_titolo_pagamenti.setObjectName("TitoloSezione")
         self.layout_pagamenti.addWidget(self.lbl_titolo_pagamenti)
 
-        # In questo layout aggiungeremo dinamicamente le label con i metodi
         self.layout_lista_pagamenti = QVBoxLayout()
         self.layout_lista_pagamenti.setSpacing(10)
         self.layout_pagamenti.addLayout(self.layout_lista_pagamenti)
 
-        # Spinge tutto verso l'alto senza far collassare il layout
         self.layout_pagamenti.addStretch()
 
         self.layout_info.addLayout(self.layout_pagamenti, stretch=1)
 
         self.main_layout.addWidget(self.frame_info)
 
-        # ==========================================
-        # PULSANTI CENTRATI IN BASSO
-        # ==========================================
         self.layout_pulsanti = QVBoxLayout()
         self.layout_pulsanti.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout_pulsanti.setSpacing(15)
@@ -102,7 +88,6 @@ class ProfiloView(QWidget):
         self.btn_indietro = QPushButton("Torna alla Dashboard")
         self.btn_indietro.setFixedSize(300, 45)
 
-        # Cursori a forma di mano
         for btn in [self.btn_ordini, self.btn_modifica_credenziali, self.btn_aggiungi_pagamento, self.btn_indietro]:
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             self.layout_pulsanti.addWidget(btn)
@@ -144,22 +129,18 @@ class ProfiloView(QWidget):
         if not utente:
             return
 
-        # Aggiorna i dati anagrafici a sinistra (ora con Telefono)
         self.lbl_nome.setText(f"<b>Nome:</b> {getattr(utente, 'nome', '-')}")
         self.lbl_cognome.setText(f"<b>Cognome:</b> {getattr(utente, 'cognome', '-')}")
         self.lbl_email.setText(f"<b>Email:</b> {getattr(utente, 'email', '-')}")
 
-        # Cerca l'attributo telefono (gestisce nomi comuni della variabile)
         telefono = getattr(utente, 'telefono', getattr(utente, 'numero_telefono', getattr(utente, '_telefono', '-')))
         self.lbl_telefono.setText(f"<b>Telefono:</b> {telefono}")
 
-        # Pulisce i vecchi metodi di pagamento
         while self.layout_lista_pagamenti.count():
             child = self.layout_lista_pagamenti.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
 
-        # Carica i nuovi metodi di pagamento a destra
         metodi = getattr(utente, 'metodi_pagamento', getattr(utente, '_metodi_pagamento', []))
 
         if metodi:

@@ -24,25 +24,20 @@ class MainWindow(QMainWindow):
     def __init__(self, gestore_utenti, gestore_ordini, gestore_prodotti, gestore_piste):
         super().__init__()
 
-        # Salviamo i controller per poterli passare alle future schermate
         self.gestore_utenti = gestore_utenti
         self.gestore_ordini = gestore_ordini
         self.gestore_prodotti = gestore_prodotti
         self.gestore_piste = gestore_piste
 
-        # Configurazione base della finestra
         self.setWindowTitle("Passo dell'Orso - Ski Resort")
         self.setMinimumSize(900, 600)
 
-        # Inizializziamo il contenitore a strati
         self.stacked_widget = QStackedWidget()
         self.setCentralWidget(self.stacked_widget)
 
         self.inizializza_viste()
 
     def inizializza_viste(self):
-        """Istanzia tutte le schermate e le aggiunge allo stack."""
-        # Creiamo le view passando il controller necessario e 'self' come main_window
         self.login_view = LoginView(self.gestore_utenti, main_window=self)
         self.registrazione_view = RegistrazioneView(self.gestore_utenti, main_window=self)
         self.dipendente_dashboard_view = DipendenteDashboardView(self.gestore_utenti, self.gestore_ordini, self.gestore_piste, main_window=self)

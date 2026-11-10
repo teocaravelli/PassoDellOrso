@@ -148,18 +148,15 @@ class RecuperoPasswordView(QWidget):
 
     def gestisci_clic(self):
         if not self.fase_inserimento_password:
-            # --- FASE 1: InserisciMail(email) ---
             email = self.input_campo.text().strip()
             if not email:
                 QMessageBox.warning(self, "Attenzione", "Inserisci un indirizzo email.")
                 return
 
             try:
-                # Sfruttiamo il metodo ufficiale del tuo GestoreUtenti
                 self.gestore_utenti.inserisciMail(email)
                 self.gestore_utenti.recuperoCredenziali(email)
             except ValueError as e:
-                # mailNonValida() -> Loop riproposto
                 QMessageBox.critical(self, "Errore", f"mailNonValida(): {str(e)}")
                 self.input_campo.clear()
                 return
@@ -168,10 +165,9 @@ class RecuperoPasswordView(QWidget):
             QMessageBox.information(
                 self,
                 "Email Inviata",
-                "confermaEmailRecupero(): Email di recupero inviata con successo tramite GestoreMail."
+                "Email di recupero inviata con successo."
             )
 
-            # Passa alla fase 2: ImpostaNuovaPassword
             self.fase_inserimento_password = True
             self.lbl_istruzioni.setText("Inserisci la nuova password (minimo 8 caratteri):")
             self.lbl_input.setText("Nuova Password:")
@@ -181,25 +177,21 @@ class RecuperoPasswordView(QWidget):
             self.btn_azione.setText("Aggiorna Password")
 
         else:
-            # --- FASE 2: ImpostaNuovaPassword(nuovaPassword) ---
             nuova_password = self.input_campo.text().strip()
 
             try:
-                # Sfruttiamo il metodo nativo che valida la password, aggiorna l'utente, salva su pickle e invia la mail
                 self.gestore_utenti.inserisciNuovaPassword(self.email_corrente, nuova_password)
             except ValueError as e:
-                # passwordNonValida() -> Loop riproposto
                 QMessageBox.critical(self, "Errore", f"passwordNonValida(): {str(e)}")
                 return
             except Exception as e:
                 QMessageBox.critical(self, "Errore", f"Errore durante l'aggiornamento: {str(e)}")
                 return
 
-            # confermaModifica() / mostraConfermaModifica()
             QMessageBox.information(
                 self,
                 "Successo",
-                "confermaModifica(): Password aggiornata con successo! Ora puoi effettuare il login con la nuova password."
+                "Password aggiornata con successo! Ora puoi effettuare il login con la nuova password."
             )
             self.torna_al_login()
 

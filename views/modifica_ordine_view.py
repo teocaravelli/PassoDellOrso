@@ -13,7 +13,6 @@ class ModificaOrdineView(QWidget):
         self.main_window = main_window
         self.ordine_corrente = None
 
-        # Lista per tenere traccia dello stato (mantenuto o rimosso) di ogni prodotto
         self.prodotti_modificati = []
 
         self.setup_ui()
@@ -26,9 +25,6 @@ class ModificaOrdineView(QWidget):
         self.main_layout.setSpacing(20)
         self.main_layout.setContentsMargins(40, 40, 40, 40)
 
-        # ==========================================
-        # INTESTAZIONE
-        # ==========================================
         self.lbl_titolo = QLabel("MODIFICA ORDINE")
         self.lbl_titolo.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_titolo.setObjectName("Titolo")
@@ -39,9 +35,6 @@ class ModificaOrdineView(QWidget):
         self.lbl_stato.setObjectName("Sottotitolo")
         self.main_layout.addWidget(self.lbl_stato)
 
-        # ==========================================
-        # LISTA PRODOTTI (Scrollabile)
-        # ==========================================
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("ScrollArea")
@@ -54,15 +47,11 @@ class ModificaOrdineView(QWidget):
         self.scroll_area.setWidget(self.scroll_content)
         self.main_layout.addWidget(self.scroll_area)
 
-        # Totale dinamico
         self.lbl_nuovo_totale = QLabel("Nuovo Totale: € 0.00")
         self.lbl_nuovo_totale.setObjectName("Totale")
         self.lbl_nuovo_totale.setAlignment(Qt.AlignmentFlag.AlignRight)
         self.main_layout.addWidget(self.lbl_nuovo_totale)
 
-        # ==========================================
-        # SEZIONE RIMBORSO (Inizialmente Nascosta)
-        # ==========================================
         self.frame_rimborso = QFrame()
         self.frame_rimborso.setObjectName("FrameRimborso")
         self.frame_rimborso.setVisible(False)
@@ -88,9 +77,6 @@ class ModificaOrdineView(QWidget):
 
         self.main_layout.addWidget(self.frame_rimborso)
 
-        # ==========================================
-        # PULSANTI D'AZIONE
-        # ==========================================
         self.layout_pulsanti = QHBoxLayout()
         self.layout_pulsanti.setSpacing(15)
 
@@ -218,7 +204,6 @@ class ModificaOrdineView(QWidget):
             btn_rimuovi.setObjectName("BtnRimuoviProdotto")
             btn_rimuovi.setCursor(Qt.CursorShape.PointingHandCursor)
 
-            # Dizionario per tracciare i dati e lo stato di rimozione
             dati_prodotto = {
                 'prodotto_obj': item,
                 'frame': frame,
@@ -228,7 +213,6 @@ class ModificaOrdineView(QWidget):
             }
             self.prodotti_modificati.append(dati_prodotto)
 
-            # Collega il pulsante rimuovi
             btn_rimuovi.clicked.connect(lambda checked, pd=dati_prodotto: self.rimuovi_singolo_prodotto(pd))
 
             lay.addWidget(lbl_info, stretch=1)
@@ -239,13 +223,11 @@ class ModificaOrdineView(QWidget):
         self.ricalcola_totale()
 
     def rimuovi_singolo_prodotto(self, dati_prodotto):
-        """Nasconde il frame del prodotto e lo segna come rimosso."""
         dati_prodotto['rimosso'] = True
         dati_prodotto['frame'].setVisible(False)  # Nascondiamo la riga
         self.ricalcola_totale()
 
     def ricalcola_totale(self):
-        """Calcola il totale contando solo i prodotti non rimossi."""
         nuovo_totale = 0.0
         for p in self.prodotti_modificati:
             if not p['rimosso']:
@@ -265,10 +247,8 @@ class ModificaOrdineView(QWidget):
                 nuovo_totale += p['quantita'] * p['prezzo']
 
         if not nuova_lista_prodotti:
-            # Se ha rimosso tutti i prodotti singolarmente, annulliamo tutto l'ordine
             return self.annulla_ordine()
 
-        # Aggiorniamo l'ordine
         self.ordine_corrente.prodotti = nuova_lista_prodotti
         self.ordine_corrente.totale = nuovo_totale
 
@@ -291,7 +271,6 @@ class ModificaOrdineView(QWidget):
             return
 
         motivo = self.combo_motivazioni.currentText()
-        # Aggiorniamo lo stato dell'ordine
         self.ordine_corrente.stato = "IN ATTESA DI RIMBORSO"
 
         if not hasattr(self.ordine_corrente, 'note'):
@@ -301,7 +280,6 @@ class ModificaOrdineView(QWidget):
         self.salva_e_torna(f"Richiesta di rimborso inviata correttamente.\nMotivazione: {motivo}")
 
     def salva_e_torna(self, messaggio):
-        # Salva nel database (Utenti gestisce lo storico)
         if hasattr(self.gestore_utenti, '_salva_dati'):
             self.gestore_utenti._salva_dati()
         elif hasattr(self.gestore_utenti, 'salva_dati'):

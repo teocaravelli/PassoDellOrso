@@ -58,7 +58,6 @@ class ModificaProdottoDialog(QDialog):
         layout.addLayout(btn_layout)
 
     def get_dati_aggiornati(self):
-        """Restituisce un dizionario con i nuovi dati inseriti."""
         dati = {
             'nome': self.input_nome.text().strip(),
             'prezzo': self.input_prezzo.value(),
@@ -83,7 +82,6 @@ class GestioneInventarioView(QWidget):
         self.main_layout.setContentsMargins(30, 30, 30, 30)
         self.main_layout.setSpacing(20)
 
-        # -- INTESTAZIONE E TASTO AGGIUNGI --
         self.header_layout = QHBoxLayout()
         self.lbl_titolo = QLabel("INVENTARIO PRODOTTI")
         self.lbl_titolo.setObjectName("TitoloAzzurro")
@@ -98,7 +96,6 @@ class GestioneInventarioView(QWidget):
 
         self.main_layout.addLayout(self.header_layout)
 
-        # -- TABELLA --
         self.tabella = QTableWidget()
         self.tabella.setColumnCount(5)
         self.tabella.setHorizontalHeaderLabels(["ID", "Nome e Tipo", "Prezzo", "Dettagli Extra", "Azioni"])
@@ -111,7 +108,6 @@ class GestioneInventarioView(QWidget):
 
         self.main_layout.addWidget(self.tabella)
 
-        # -- BOTTONE INDIETRO --
         self.btn_indietro = QPushButton("Torna alla Dashboard")
         self.btn_indietro.setObjectName("BtnIndietro")
         self.btn_indietro.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -160,7 +156,6 @@ class GestioneInventarioView(QWidget):
     def aggiorna_vista(self):
         self.tabella.setRowCount(0)
 
-        # Usiamo il metodo corretto del tuo GestoreProdotti
         prodotti = self.gestore_prodotti.get_tutti_prodotti()
 
         self.tabella.setRowCount(len(prodotti))
@@ -171,7 +166,6 @@ class GestioneInventarioView(QWidget):
             id_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.tabella.setItem(riga, 0, id_item)
 
-            # Estrae dinamicamente "Attrezzatura", "SkiPass", ecc.
             tipo_classe = prodotto.__class__.__name__
             nome_item = QTableWidgetItem(f"{prodotto.nome}\n[{tipo_classe}]")
             nome_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)

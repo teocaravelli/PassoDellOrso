@@ -27,7 +27,6 @@ class AggiungiPagamentoView(QWidget):
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Titolo
         self.lbl_titolo = QLabel("AGGIUNGI METODO DI PAGAMENTO")
         self.lbl_titolo.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_titolo.setObjectName("Titolo")
@@ -35,14 +34,12 @@ class AggiungiPagamentoView(QWidget):
 
         self.main_layout.addSpacing(20)
 
-        # Riquadro del Form
         self.form_frame = QFrame()
         self.form_frame.setObjectName("FormFrame")
         self.form_layout = QFormLayout(self.form_frame)
         self.form_layout.setSpacing(15)
         self.form_layout.setContentsMargins(30, 30, 30, 30)
 
-        # Campi di input
         self.combo_tipo = QComboBox()
         self.combo_tipo.addItems([
             "Carta di Credito (Visa/Mastercard)",
@@ -64,7 +61,6 @@ class AggiungiPagamentoView(QWidget):
         self.input_cvv.setPlaceholderText("CVV (Solo per carte)")
         self.input_cvv.setEchoMode(QLineEdit.EchoMode.Password)
 
-        # Aggiunta dei campi al FormLayout
         self.form_layout.addRow(QLabel("Tipologia:"), self.combo_tipo)
         self.form_layout.addRow(QLabel("Dati:"), self.input_dati)
         self.form_layout.addRow(QLabel("Scadenza:"), self.input_scadenza)
@@ -74,7 +70,6 @@ class AggiungiPagamentoView(QWidget):
 
         self.main_layout.addSpacing(20)
 
-        # Pulsanti
         self.layout_pulsanti = QHBoxLayout()
         self.layout_pulsanti.setSpacing(20)
 
@@ -131,17 +126,14 @@ class AggiungiPagamentoView(QWidget):
             QMessageBox.warning(self, "Errore", "Il campo 'Dati' è obbligatorio.")
             return
 
-        # Lista di metodi digitali che non richiedono l'oscuramento in stile "carta"
         metodi_digitali = ["PayPal", "Satispay", "Apple Pay", "Google Pay"]
 
         if tipo in metodi_digitali:
             nuovo_metodo_str = f"{tipo} - {dati}"
         else:
-            # Per le carte mostriamo solo gli ultimi 4 caratteri per "sicurezza"
             ultimi_numeri = dati[-4:] if len(dati) >= 4 else dati
             nuovo_metodo_str = f"{tipo} - **** {ultimi_numeri}"
 
-        # Aggiungiamo il metodo all'utente (gestendo property o lista privata)
         if hasattr(utente, 'aggiungi_metodo_pagamento'):
             utente.aggiungi_metodo_pagamento(nuovo_metodo_str)
         else:
@@ -149,7 +141,6 @@ class AggiungiPagamentoView(QWidget):
                 utente._metodi_pagamento = []
             utente._metodi_pagamento.append(nuovo_metodo_str)
 
-        # Salva su file pickle
         if hasattr(self.gestore_utenti, '_salva_dati'):
             self.gestore_utenti._salva_dati()
         elif hasattr(self.gestore_utenti, 'salva_dati'):

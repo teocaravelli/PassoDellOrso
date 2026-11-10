@@ -2,7 +2,6 @@
 import sys
 import traceback
 
-# Aggiungi questa funzione per catturare i crash silenziosi di PyQt6
 def cattura_errori(tipo_eccezione, valore_eccezione, traceback_eccezione):
     print("\n" + "!"*50)
     print("ERRORE FATALE TROVATO:")

@@ -17,14 +17,12 @@ class InserimentoDipendenteView(QWidget):
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # -- CONTENITORE PRINCIPALE (Form) --
         self.form_box = QFrame()
         self.form_box.setObjectName("FormBox")
         self.box_layout = QVBoxLayout(self.form_box)
         self.box_layout.setContentsMargins(40, 30, 40, 30)
         self.box_layout.setSpacing(15)
 
-        # Titolo
         self.lbl_titolo = QLabel("CREAZIONE NUOVO DIPENDENTE")
         self.lbl_titolo.setObjectName("TitoloAzzurro")
         self.lbl_titolo.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -32,7 +30,6 @@ class InserimentoDipendenteView(QWidget):
 
         self.box_layout.addSpacing(10)
 
-        # -- Campi di Input --
         self.input_nome = QLineEdit()
         self.input_nome.setPlaceholderText("Nome")
         self.box_layout.addWidget(self.input_nome)
@@ -61,7 +58,6 @@ class InserimentoDipendenteView(QWidget):
 
         self.box_layout.addSpacing(20)
 
-        # -- Bottoni --
         self.btn_layout = QHBoxLayout()
 
         self.btn_indietro = QPushButton("Annulla")
@@ -162,7 +158,6 @@ class InserimentoDipendenteView(QWidget):
             QMessageBox.critical(self, "Errore Creazione", str(e))
 
     def pulisci_campi(self):
-        """Svuota il form per il prossimo utilizzo."""
         self.input_nome.clear()
         self.input_cognome.clear()
         self.input_telefono.clear()
