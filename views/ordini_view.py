@@ -182,9 +182,10 @@ class OrdiniView(QWidget):
             btn_modifica.clicked.connect(lambda checked, o=ordine: self.vai_a_modifica_ordine(o))
 
             # Se è già in fase di rimborso, disabilitiamo l'interazione
-            if "RIMBORSO" in stato.upper() or "ANNULLATO" in stato.upper():
+            if "COMPLETATO" in stato.upper() or "RIMBORSO" in stato.upper() or "ANNULLATO" in stato.upper():
                 btn_modifica.setEnabled(False)
                 btn_modifica.setStyleSheet("background-color: #cccccc; color: #666666; border-radius: 6px;")
+                btn_modifica.setText("Non Modificabile")
 
             lay_azione.addWidget(btn_modifica)
 

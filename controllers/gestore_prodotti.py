@@ -3,12 +3,78 @@ import pickle
 
 from models.prodotto import Prodotto
 from models.prodotto_carrello import ProdottoCarrello
+from datetime import date, datetime
+from models.assicurazione import Assicurazione
+from models.attrezzatura import Attrezzatura
+from models.skipass import SkiPass
+from models.lezione import Lezione
+from models.enums import Livello, TipologiaAttrezzatura, FormulaTemporale
 
 class GestoreProdotti:
     def __init__(self):
         self._prodotti = []
         self._file_path = "data/prodotti.pickle"
         self._carica_dati()
+
+        def crea_e_salva_prodotto(self, tipo: str, dati: dict) -> None:
+            tutti_prodotti = self.get_tutti_prodotti()
+            nuovo_id = 1 if not tutti_prodotti else max(p.id for p in tutti_prodotti) + 1
+
+            nuovo_prodotto = None
+
+            if tipo == "Attrezzatura":
+                nuovo_prodotto = Attrezzatura(
+                    id_prodotto=nuovo_id,
+                    nome=dati['nome'],
+                    descrizione="",
+                    prezzo=dati['prezzo'],
+                    immagine="",
+                    is_disponibile=dati['is_disponibile'],
+                    brand=dati['brand'],
+                    data=date.today(),
+                    livello=dati['livello'],
+                    quantita=dati['quantita'],
+                    taglia=dati['taglia'],
+                    tipologia=dati['tipologia']
+                )
+            elif tipo == "Skipass":
+                nuovo_prodotto = SkiPass(
+                    id_prodotto=nuovo_id,
+                    nome=dati['nome'],
+                    descrizione="",
+                    prezzo=dati['prezzo'],
+                    immagine="",
+                    is_disponibile=dati['is_disponibile'],
+                    formula_temporale=dati['formula_temporale'],
+                    data_inizio=dati['data_inizio'],
+                    data_fine=dati['data_fine']
+                )
+            elif tipo == "Lezione":
+                nuovo_prodotto = Lezione(
+                    id_prodotto=nuovo_id,
+                    nome=dati['nome'],
+                    descrizione="",
+                    prezzo=dati['prezzo'],
+                    immagine="",
+                    is_disponibile=dati['is_disponibile'],
+                    data=dati['data'],
+                    livello=dati['livello'],
+                    quantita=dati['quantita']
+                )
+            elif tipo == "Assicurazione":
+                nuovo_prodotto = Assicurazione(
+                    id_prodotto=nuovo_id,
+                    nome=dati['nome'],
+                    descrizione="",
+                    prezzo=dati['prezzo'],
+                    immagine="",
+                    is_disponibile=dati['is_disponibile'],
+                    data_inizio=dati['data_inizio'],
+                    data_fine=dati['data_fine']
+                )
+
+            if nuovo_prodotto:
+                self.inserisciNuovoProdotto(nuovo_prodotto)
 
     def inserisciNuovoProdotto(self, prodotto) -> None:
         self._prodotti.append(prodotto)
