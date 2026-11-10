@@ -127,7 +127,34 @@ class ModificaOrdineView(QWidget):
 
             QComboBox { padding: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
 
-            QPushButton { color: white; font-weight: bold; font-size: 14px; border-radius: 6px; padding: 8px; }
+            /* Regola generica base per i pulsanti */
+            QPushButton { 
+                background-color: #007bff; /* Sfondo default blu per evitare pulsanti bianchi su bianco */
+                color: white; 
+                font-weight: bold; 
+                font-size: 14px; 
+                border-radius: 6px; 
+                padding: 8px; 
+            }
+
+            /* --- FIX PER I POPUP (QMessageBox) --- */
+            QMessageBox { 
+                background-color: white; 
+            }
+            QMessageBox QLabel { 
+                color: black; 
+                font-size: 14px; 
+            }
+            QMessageBox QPushButton {
+                background-color: #e0e0e0;
+                color: black;
+                min-width: 80px;
+                border: 1px solid #ccc;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #d0d0d0;
+            }
+            /* ------------------------------------- */
 
             /* Stile per il pulsantino rimuovi vicino al prodotto */
             QPushButton#BtnRimuoviProdotto { background-color: #d9534f; padding: 5px 15px; font-size: 12px; }

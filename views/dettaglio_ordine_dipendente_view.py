@@ -92,12 +92,25 @@ class DettaglioOrdineDipendenteView(QWidget):
         self.main_layout.addWidget(self.pannello_rimborso)
         self.pannello_rimborso.hide()  # Lo mostriamo solo se serve
 
-        # -- BOTTONE INDIETRO --
+        # -- BOTTONIERA AZIONI INFERIORE --
+        self.bottom_layout = QHBoxLayout()
+
         self.btn_indietro = QPushButton("Torna alla Lista Ordini")
         self.btn_indietro.setObjectName("BtnIndietro")
         self.btn_indietro.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_indietro.setFixedWidth(250)
-        self.main_layout.addWidget(self.btn_indietro, alignment=Qt.AlignmentFlag.AlignLeft)
+
+        self.btn_completa = QPushButton("Completa Ordine")
+        self.btn_completa.setObjectName("BtnCompleta")
+        self.btn_completa.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_completa.setFixedWidth(250)
+
+        self.bottom_layout.addWidget(self.btn_indietro, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.bottom_layout.addStretch()  # Spinge il pulsante "Completa Ordine" a destra
+        self.bottom_layout.addWidget(self.btn_completa, alignment=Qt.AlignmentFlag.AlignRight)
+
+        self.main_layout.addLayout(self.bottom_layout)
+        self.btn_completa.hide()  # Lo mostriamo in base allo stato
 
     def applica_stili(self):
         self.setStyleSheet("""
@@ -126,8 +139,8 @@ class DettaglioOrdineDipendenteView(QWidget):
             QPushButton:hover { background-color: #2a528a; }
             #BtnIndietro { background-color: #666; }
             #BtnIndietro:hover { background-color: #888; }
-            #BtnApprova { background-color: #28a745; }
-            #BtnApprova:hover { background-color: #218838; }
+            #BtnApprova, #BtnCompleta { background-color: #28a745; }
+            #BtnApprova:hover, #BtnCompleta:hover { background-color: #218838; }
             #BtnRifiuta { background-color: #dc3545; }
             #BtnRifiuta:hover { background-color: #c82333; }
         """)
@@ -136,6 +149,7 @@ class DettaglioOrdineDipendenteView(QWidget):
         self.btn_indietro.clicked.connect(self.torna_indietro)
         self.btn_approva.clicked.connect(self.accetta_rimborso)
         self.btn_rifiuta.clicked.connect(self.rifiuta_rimborso)
+        self.btn_completa.clicked.connect(self.completa_ordine)
 
     def imposta_ordine(self, ordine):
         self.ordine_corrente = ordine
@@ -203,6 +217,45 @@ class DettaglioOrdineDipendenteView(QWidget):
         else:
             self.pannello_rimborso.hide()
 
+        # 4. Logica visualizzazione bottone Completa Ordine
+        # Lo mostriamo se l'ordine non è ancora completato, non è annullato e non è in fase di rimborso
+        if "COMPLETATO" not in stato_check and "RIMBORSO" not in stato_check and "ANNULLATO" not in stato_check:
+            self.btn_completa.show()
+        else:
+            self.btn_completa.hide()
+
+    def completa_ordine(self):
+        risposta = QMessageBox.question(
+            self, "Completa Ordine",
+            f"Sei sicuro di voler completare l'ordine #{self.ordine_corrente.id_ordine}?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if risposta == QMessageBox.StandardButton.Yes:
+
+            # 1. Aggiorna lo stato nel gestore ordini e salva
+            self.ordine_corrente.stato = StatoOrdine.COMPLETATO
+            if hasattr(self.gestore_ordini, 'salva_dati'):
+                self.gestore_ordini.salva_dati()
+            elif hasattr(self.gestore_ordini, '_salva_dati'):
+                self.gestore_ordini._salva_dati()
+
+            # 2. Sincronizza lo stato dell'ordine anche per il cliente e salva gli utenti
+            utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
+            for u in utenti:
+                ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))
+                for o in ordini_cliente:
+                    if o.id_ordine == self.ordine_corrente.id_ordine:
+                        o.stato = StatoOrdine.COMPLETATO
+                        if hasattr(self.gestore_utenti, 'salva_dati'):
+                            self.gestore_utenti.salva_dati()
+                        elif hasattr(self.gestore_utenti, '_salva_dati'):
+                            self.gestore_utenti._salva_dati()
+                        break
+
+            QMessageBox.information(self, "Successo", "Ordine completato con successo!")
+            # Ricarica l'interfaccia per mostrare il nuovo stato e nascondere il pulsante
+            self.imposta_ordine(self.ordine_corrente)
+
     def accetta_rimborso(self):
         risposta = QMessageBox.question(
             self, "Conferma Rimborso",
@@ -212,14 +265,17 @@ class DettaglioOrdineDipendenteView(QWidget):
         if risposta == QMessageBox.StandardButton.Yes:
             self.gestore_ordini.gestisciRimborso(self.ordine_corrente.id_ordine, approvato=True)
 
-            # --- SINCRONIZZAZIONE CLIENTE ---
+            # Sincronizzazione cliente
             utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
             for u in utenti:
                 ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))
                 for o in ordini_cliente:
                     if o.id_ordine == self.ordine_corrente.id_ordine:
                         o.stato = StatoOrdine.RIMBORSO_COMPLETATO
-                        self.gestore_utenti._salva_dati()
+                        if hasattr(self.gestore_utenti, 'salva_dati'):
+                            self.gestore_utenti.salva_dati()
+                        elif hasattr(self.gestore_utenti, '_salva_dati'):
+                            self.gestore_utenti._salva_dati()
 
             QMessageBox.information(self, "Successo", "Rimborso approvato e scorte ripristinate.")
             self.imposta_ordine(self.ordine_corrente)
@@ -233,14 +289,17 @@ class DettaglioOrdineDipendenteView(QWidget):
         if risposta == QMessageBox.StandardButton.Yes:
             self.gestore_ordini.gestisciRimborso(self.ordine_corrente.id_ordine, approvato=False)
 
-            # --- SINCRONIZZAZIONE CLIENTE ---
+            # Sincronizzazione cliente
             utenti = getattr(self.gestore_utenti, '_utenti', getattr(self.gestore_utenti, 'utenti', []))
             for u in utenti:
                 ordini_cliente = getattr(u, 'ordini', getattr(u, '_ordini', []))
                 for o in ordini_cliente:
                     if o.id_ordine == self.ordine_corrente.id_ordine:
                         o.stato = StatoOrdine.COMPLETATO
-                        self.gestore_utenti._salva_dati()
+                        if hasattr(self.gestore_utenti, 'salva_dati'):
+                            self.gestore_utenti.salva_dati()
+                        elif hasattr(self.gestore_utenti, '_salva_dati'):
+                            self.gestore_utenti._salva_dati()
 
             QMessageBox.information(self, "Rimborso Rifiutato", "La richiesta di rimborso è stata respinta.")
             self.imposta_ordine(self.ordine_corrente)
