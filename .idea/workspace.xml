@@ -1,106 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="ALL" />
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="sistemato il necessario">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d6d02c30-921b-4a4f-ada9-a23699daa781" name="Changes" comment="realizzazione delle view mancanti della parte dipendente">
+      <change beforePath="$PROJECT_DIR$/../PassoDellOrsoVecchio/.idea/PassoDellOrso.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../PassoDellOrsoVecchio/.idea/PassoDellOrso.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PassoDellOrsoVecchio/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../PassoDellOrsoVecchio/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PassoDellOrsoVecchio/tests/test_piste.py" beforeDir="false" afterPath="$PROJECT_DIR$/../PassoDellOrsoVecchio/tests/test_piste.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PassoDellOrsoVecchio/views/gestione_inventario_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/../PassoDellOrsoVecchio/views/gestione_inventario_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExportToHTMLSettings">
-    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../PassoDellOrsoLaVendetta\exportToHTML" />
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Python Unit Test" />
         <option value="Python Script" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../PassoDellOrsoVecchio" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;teocaravelli&quot;
+    &quot;assignee&quot;: &quot;tommysansiro-star&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/teocaravelli/PassoDellOrsoLaVendetta.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/tommysansiro-star/PassoDellOrso.git&quot;,
     &quot;accountId&quot;: &quot;a103bb9e-aaee-4d34-81a5-c3ca5d626d6b&quot;
   }
 }</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000015051211" />
-      <entry key="MS500" value="1.0680998710360818" />
-      <entry key="S2" value="4.5855352216741245" />
-      <entry key="S5" value="13.23047078590293" />
-      <entry key="S10" value="23.581965672733368" />
-      <entry key="S30" value="38.50441150429965" />
-      <entry key="S60" value="44.178007640550746" />
-      <entry key="M2" value="47.430049855692616" />
-      <entry key="M5" value="49.531694076914256" />
-      <entry key="M10" value="50.259083414736146" />
-      <entry key="M15" value="50.51648630473712" />
-      <entry key="M30" value="51.825400511793646" />
-      <entry key="H1" value="61.660095917533866" />
-      <entry key="H2" value="86.03338970414333" />
-      <entry key="H4" value="114.83325007252418" />
-      <entry key="D1" value="156.71265584529831" />
-      <entry key="W1" value="166.31518821931377" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0000000079626734" />
+      <entry key="S60" value="1.0004850809987933" />
+      <entry key="M2" value="1.1365378977247629" />
+      <entry key="M5" value="6.224114787318925" />
+      <entry key="M10" value="21.12387928212767" />
+      <entry key="M15" value="34.03223582030695" />
+      <entry key="M30" value="61.9760023928341" />
+      <entry key="H1" value="118.96499157491687" />
+      <entry key="H2" value="276.5724751392709" />
+      <entry key="H4" value="676.2804892918458" />
+      <entry key="D1" value="2494.146875970312" />
+      <entry key="W1" value="3319.944889223435" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="0.0" />
-      <entry key="S10" value="0.0" />
-      <entry key="S30" value="1.7760977754896217E-109" />
-      <entry key="S60" value="1.1347304291296599E-54" />
-      <entry key="M2" value="3.0017271238821428E-27" />
-      <entry key="M5" value="9.596913194418953E-11" />
-      <entry key="M10" value="3.42332076564121E-5" />
-      <entry key="M15" value="0.002509722169060628" />
-      <entry key="M30" value="0.18936521378731946" />
-      <entry key="H1" value="1.6718837461010154" />
-      <entry key="H2" value="4.996090314142772" />
-      <entry key="H4" value="8.651369435608816" />
-      <entry key="D1" value="13.684110529929267" />
-      <entry key="W1" value="14.804504015598162" />
+      <entry key="S2" value="4.069869685417878E-188" />
+      <entry key="S5" value="1.1096167992044526E-75" />
+      <entry key="S10" value="3.522188924261129E-38" />
+      <entry key="S30" value="5.397997429875501E-13" />
+      <entry key="S60" value="1.5227004023609616E-6" />
+      <entry key="M2" value="0.0030394181095724027" />
+      <entry key="M5" value="0.3271072524195313" />
+      <entry key="M10" value="1.6430165251340243" />
+      <entry key="M15" value="2.894834263960752" />
+      <entry key="M30" value="5.702274101159824" />
+      <entry key="H1" value="11.165521786430345" />
+      <entry key="H2" value="21.876968916550666" />
+      <entry key="H4" value="36.80401108215709" />
+      <entry key="D1" value="72.68087250687701" />
+      <entry key="W1" value="85.4935478937521" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9265880633442384" />
-      <entry key="MS500" value="1.0524462491985822" />
-      <entry key="S2" value="4.574363798171102" />
-      <entry key="S5" value="13.216966988768348" />
-      <entry key="S10" value="23.567840510965947" />
-      <entry key="S30" value="38.49531939817156" />
-      <entry key="S60" value="44.172537859100665" />
-      <entry key="M2" value="47.42704136047708" />
-      <entry key="M5" value="49.53041869808718" />
-      <entry key="M10" value="50.25846718790038" />
-      <entry key="M15" value="50.518548914939316" />
-      <entry key="M30" value="52.01409869640919" />
-      <entry key="H1" value="63.32974350531097" />
-      <entry key="H2" value="91.02609354562108" />
-      <entry key="H4" value="123.48162763505931" />
-      <entry key="D1" value="170.39596060729903" />
-      <entry key="W1" value="181.11956719794208" />
+      <entry key="MS100" value="0.7474246243174691" />
+      <entry key="MS500" value="0.94343825089536" />
+      <entry key="S2" value="0.9855493369393707" />
+      <entry key="S5" value="0.9941944812159504" />
+      <entry key="S10" value="0.9970930153280337" />
+      <entry key="S30" value="0.9990300725293192" />
+      <entry key="S60" value="0.9999993613749844" />
+      <entry key="M2" value="1.1389743802077006" />
+      <entry key="M5" value="6.543471447189772" />
+      <entry key="M10" value="22.75001585274499" />
+      <entry key="M15" value="36.90778935718447" />
+      <entry key="M30" value="67.65930122161414" />
+      <entry key="H1" value="130.1106169554475" />
+      <entry key="H2" value="298.4267824344737" />
+      <entry key="H4" value="713.0610305444308" />
+      <entry key="D1" value="2566.816959160025" />
+      <entry key="W1" value="3405.4364933851984" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 2,
+  &quot;associatedIndex&quot;: 4,
   &quot;fromUser&quot;: false
 }</component>
-  <component name="ProjectId" id="3LSjcsLw79nEVoZk0rWWT5LwX90" />
+  <component name="ProjectId" id="3L6Jkl5mUvCd0QFeLzDnl62grlD" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -111,21 +116,30 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.main (2).executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ordini_dipendente_view.executor&quot;: &quot;Run&quot;,
-    &quot;Python.popola_ordini.executor&quot;: &quot;Run&quot;,
+    &quot;Python.popola_piste.executor&quot;: &quot;Run&quot;,
     &quot;Python.popola_prodotti.executor&quot;: &quot;Run&quot;,
+    &quot;Python.popola_utenti.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prova.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_ordini.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_pista.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_piste.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_prodotti.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_utenti.executor&quot;: &quot;Run&quot;,
+    &quot;Python.view.executor&quot;: &quot;Run&quot;,
+    &quot;Python.views.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/PycharmProjects/PassoDellOrsoLaVendetta&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -135,12 +149,220 @@
   }
 }</component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta" />
-      <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\views" />
-      <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\models" />
-      <recent name="C:\Users\User\PycharmProjects\PassoDellOrsoLaVendetta\controllers" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\PycharmProjects\PassoDellOrso\tests" />
+      <recent name="C:\Users\tommy\PycharmProjects\PassoDellOrso\models" />
     </key>
+  </component>
+  <component name="RunManager" selected="Python.login_view">
+    <configuration name="login_view" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/views" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="C:\Users\User\PycharmProjects\PassoDellOrso\views\login_view.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main (2)" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Downloads" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Downloads/main (2).py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_ordini" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_ordini.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_piste" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_piste.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_prodotti" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_prodotti.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_utenti" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_utenti.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="views" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PassoDellOrso" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="~\PycharmProjects\PythonProject\.venv" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Downloads" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Downloads/views.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -151,73 +373,117 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a31efd4a-a690-4764-85aa-effcd39deb3d" name="Changes" comment="" />
-      <created>1793454445612</created>
+      <changelist id="d6d02c30-921b-4a4f-ada9-a23699daa781" name="Changes" comment="" />
+      <created>1792768728813</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1793454445612</updated>
-      <workItem from="1793454446659" duration="1966000" />
-      <workItem from="1793623977440" duration="2000" />
-      <workItem from="1793637957157" duration="3565000" />
-      <workItem from="1793641644709" duration="41000" />
-      <workItem from="1793718499755" duration="154000" />
-      <workItem from="1793988691580" duration="1017000" />
-      <workItem from="1794305245496" duration="2337000" />
+      <updated>1792768728813</updated>
+      <workItem from="1792922384205" duration="7894000" />
+      <workItem from="1793008827751" duration="7788000" />
+      <workItem from="1793023558535" duration="11564000" />
+      <workItem from="1793056786237" duration="5656000" />
+      <workItem from="1793115431749" duration="5243000" />
+      <workItem from="1793134643084" duration="415000" />
+      <workItem from="1793202835956" duration="7542000" />
+      <workItem from="1793285433555" duration="193000" />
+      <workItem from="1793285728677" duration="3928000" />
+      <workItem from="1793364858892" duration="526000" />
+      <workItem from="1793454408441" duration="940000" />
+      <workItem from="1794337519390" duration="1264000" />
     </task>
-    <task id="LOCAL-00001" summary="sistemato il necessario">
+    <task id="LOCAL-00001" summary="Aggiunta dei models di tutte le entità, esclusi i gestori. Non sono state controllati tutti i metodi e le funzionalità">
       <option name="closed" value="true" />
-      <created>1793641674854</created>
+      <created>1792855719457</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1793641674854</updated>
+      <updated>1792855719457</updated>
     </task>
-    <task id="LOCAL-00002" summary="sistemato il necessario">
+    <task id="LOCAL-00002" summary="Aggiunta dei models di tutte le entità, esclusi i gestori. Non sono state controllati tutti i metodi e le funzionalità">
       <option name="closed" value="true" />
-      <created>1793988731517</created>
+      <created>1792855730655</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1793988731517</updated>
+      <updated>1792855730655</updated>
     </task>
-    <task id="LOCAL-00003" summary="sistemato il necessario">
+    <task id="LOCAL-00003" summary="aggiunta dei controllers">
       <option name="closed" value="true" />
-      <created>1794305617765</created>
+      <created>1793026126102</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1794305617765</updated>
+      <updated>1793026126102</updated>
     </task>
-    <task id="LOCAL-00004" summary="sistemato il necessario">
+    <task id="LOCAL-00004" summary="realizzazione unit tests funzionanti">
       <option name="closed" value="true" />
-      <created>1794306161473</created>
+      <created>1793036729901</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1794306161473</updated>
+      <updated>1793036729902</updated>
     </task>
-    <task id="LOCAL-00005" summary="sistemato il necessario">
+    <task id="LOCAL-00005" summary="correzioni varie">
       <option name="closed" value="true" />
-      <created>1794312824667</created>
+      <created>1793066951717</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1794312824667</updated>
+      <updated>1793066951717</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="implementazione parziale main e view di login">
+      <option name="closed" value="true" />
+      <created>1793122452808</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1793122452808</updated>
+    </task>
+    <task id="LOCAL-00007" summary="realizzazione interfacce login e registrazione">
+      <option name="closed" value="true" />
+      <created>1793285470595</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1793285470595</updated>
+    </task>
+    <task id="LOCAL-00008" summary="realizzazione delle view mancanti della parte dipendente">
+      <option name="closed" value="true" />
+      <created>1793364896701</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1793364896701</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="sistemato il necessario" />
-    <option name="LAST_COMMIT_MESSAGE" value="sistemato il necessario" />
+    <MESSAGE value="Aggiunta dei models di tutte le entità, esclusi i gestori. Non sono state controllati tutti i metodi e le funzionalità" />
+    <MESSAGE value="aggiunta dei controllers" />
+    <MESSAGE value="realizzazione unit tests funzionanti" />
+    <MESSAGE value="correzioni varie" />
+    <MESSAGE value="implementazione parziale main e view di login" />
+    <MESSAGE value="realizzazione interfacce login e registrazione" />
+    <MESSAGE value="realizzazione delle view mancanti della parte dipendente" />
+    <option name="LAST_COMMIT_MESSAGE" value="realizzazione delle view mancanti della parte dipendente" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$ordini_dipendente_view.coverage" NAME="ordini_dipendente_view Coverage Results" MODIFIED="1793639702580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/views" />
-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_ordini.coverage" NAME="popola_ordini Coverage Results" MODIFIED="1794310932008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$main.coverage" NAME="main Coverage Results" MODIFIED="1794317085503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PassoDellOrsoLaVendetta$popola_prodotti.coverage" NAME="popola_prodotti Coverage Results" MODIFIED="1793616802057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$test_piste.coverage" NAME="test_piste Coverage Results" MODIFIED="1793066580012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$views.coverage" NAME="views Coverage Results" MODIFIED="1793037046929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Downloads" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1793037164536" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Downloads" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$test_pista.coverage" NAME="test_pista Coverage Results" MODIFIED="1793036619250" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$prova.coverage" NAME="prova Coverage Results" MODIFIED="1793116382251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/views" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$popola_piste.coverage" NAME="popola_piste Coverage Results" MODIFIED="1793455251805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$main.coverage" NAME="main Coverage Results" MODIFIED="1793455246549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$test_ordini.coverage" NAME="test_ordini Coverage Results" MODIFIED="1793066572872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$view.coverage" NAME="view Coverage Results" MODIFIED="1793118230178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/views" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$test_prodotti.coverage" NAME="test_prodotti Coverage Results" MODIFIED="1793066567662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$test_utenti.coverage" NAME="test_utenti Coverage Results" MODIFIED="1793066562199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$popola_prodotti.coverage" NAME="popola_prodotti Coverage Results" MODIFIED="1793455255832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PassoDellOrso$popola_utenti.coverage" NAME="popola_utenti Coverage Results" MODIFIED="1793455258707" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
