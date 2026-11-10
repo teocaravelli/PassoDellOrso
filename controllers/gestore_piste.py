@@ -20,9 +20,6 @@ class GestorePiste:
                 return pista
         return None
 
-    def filtraPistePerDifficolta(self, difficolta) -> list:
-        return [p for p in self._piste if p.difficolta == difficolta]
-
     def modificaStatoPista(self, id_pista: int, nuovo_stato) -> bool:
         pista = self.getPistaById(id_pista)
         if pista:
